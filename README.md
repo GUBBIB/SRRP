@@ -1,2 +1,107 @@
 # SRRP
+
 Spring-React-Rest-PlayGround
+
+# BACKEND
+
+## Spring Boot 환경
+
+* **Spring Boot 버전:** 4.0.0
+* **Java 버전:** 21
+* **Build Tool:** Gradle / Groovy DSL
+
+---
+
+## 프로젝트 구조
+
+```
+backend/
+ ├─ build.gradle   (또는 pom.xml)
+ └─ src/
+     ├─ main/
+     │   ├─ java/
+     │   │   └─ com.github.gubbib/
+     │   │       ├─ BackendApplication.java   # @SpringBootApplication (메인 클래스)
+     │   │       ├─ config/       # 시큐리티, CORS, JPA 설정 등
+     │   │       ├─ domain/       # 엔티티 / 도메인 모델 (@Entity 등)
+     │   │       ├─ dto/          # 요청 / 응답 DTO
+     │   │       ├─ repository/   # JPA Repository 인터페이스
+     │   │       ├─ service/      # 서비스 계층 — 비즈니스 로직
+     │   │       ├─ controller/   # REST API 컨트롤러 (@RestController 등)
+     │   │       └─ security/     # JWT, OAuth, 인증/인가 관련 구현
+     │   └─ resources/
+     │       ├─ application.properties (또는 application.yml)  # 환경 설정
+     │       ├─ static/      # 안 씀
+     │       └─ templates/   # 안 씀
+     └─ test/
+         └─ java/
+             └─ com.github.gubbib
+                 └─ BackendApplicationTests.java   # 테스트 코드
+
+```
+
+---
+
+## 주요 의존성 (Dependencies)
+
+### Core & Web
+
+* **Spring Web**
+  REST API 구축을 위한 기본 웹 프레임워크
+
+### Database
+
+* **Spring Data JPA**
+  ORM 기반 DB 연동 및 Repository 지원
+* **PostgreSQL Driver**
+  PostgreSQL 데이터베이스 연결용 JDBC 드라이버
+
+### Security & Auth
+
+* **Spring Security**
+  인증/인가 처리 전체 담당
+* **OAuth2 Client**
+  Google/GitHub 등 소셜 로그인 클라이언트 기능
+* **OAuth2 Resource Server**
+  JWT 기반 API 보호 / 토큰 검증 기능
+
+### Developer Tools
+
+* **Lombok**
+  Getter/Setter/Builder 자동 생성
+* **Spring Boot DevTools**
+  개발 환경 자동 리로드 및 편의 기능 제공
+* **Validation**
+  요청 값 자동 검증 (`@Valid`, `@NotBlank`, `@Email` 등)
+
+### Redis
+
+* **Spring Data Redis**
+  Redis 기반 캐시, 세션, Refresh Token 저장 등을 위한 Key-Value 스토어 연동
+
+---
+
+# FRONTEND
+
+## React 환경 (Vite 기반)
+
+* **Frontend Framework:** React
+* **Build Tool:** Vite
+* **Language:** TypeScript
+* **패키지 매니저:** npm
+
+---
+
+## 프로젝트 구조
+
+```
+frontend/
+ ├── public/
+ ├── src/
+ │    ├── components/
+ │    ├── App.jsx
+ │    └── main.jsx
+ ├── index.html
+ ├── package.json
+ └── vite.config.js
+```
