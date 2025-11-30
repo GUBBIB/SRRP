@@ -1,0 +1,17 @@
+package com.github.gubbib.backend.Domain.User;
+
+public enum UserRole {
+    USER("USER"),
+    ADMIN("ADMIN"),
+    MANAGER("MANAGER");
+
+    private final String roleName;
+
+    UserRole(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+}
