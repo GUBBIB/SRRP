@@ -1,6 +1,5 @@
-# SRRP
-
-Spring-React-Rest-PlayGround
+# SRRP ( Spring-React-Rest-PlayGround )
+- 스프링부트와 리액트로 가지고 노는 곳 
 
 # BACKEND
 
