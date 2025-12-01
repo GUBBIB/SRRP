@@ -25,6 +25,7 @@ backend/
      │   │       ├─ Domain/       # 엔티티 / 도메인 모델 (@Entity 등)
      │   │       ├─ Dto/          # 요청 / 응답 DTO
      │   │       ├─ Exception/    # 전역 및 도메인별 예외 관리 폴더
+     │   │       ├─ JWT/          # JWT 기반 인증/인가 구현 (토큰 생성, 검증, 필터 등)
      │   │       ├─ Repository/   # JPA Repository 인터페이스
      │   │       ├─ Service/      # 서비스 계층 — 비즈니스 로직
      │   │       └─ BackendApplication.java   # @SpringBootApplication (메인 클래스)
@@ -104,3 +105,6 @@ frontend/
  ├── package.json
  └── vite.config.js
 ```
+
+# 참고 
+- [[Java] Spring Boot 3.x Security + OAuth 2.0 Client 이해하고 적용하기 -1 : 초기 환경 구성 및 카카오, 네이버 로그인 사용자 정보 조회](https://adjh54.tistory.com/594)
