@@ -39,8 +39,6 @@ backend/
 
 ```
 
----
-
 ## 주요 의존성 (Dependencies)
 
 ### Core & Web
@@ -63,6 +61,8 @@ backend/
   Google/GitHub 등 소셜 로그인 클라이언트 기능
 * **OAuth2 Resource Server**
   JWT 기반 API 보호 / 토큰 검증 기능
+* **[JJWT (io.jsonwebtoken)](https://mvnrepository.com/search?q=jsonwebtoken)**
+  JWT 생성/검증용 라이브러리 (0.11.5 버전 사용)
 
 ### Developer Tools
 
@@ -70,7 +70,7 @@ backend/
   Getter/Setter/Builder 자동 생성
 * **Spring Boot DevTools**
   개발 환경 자동 리로드 및 편의 기능 제공
-* **Validation**
+* **Validation (Jakarta Validation)**
   요청 값 자동 검증 (`@Valid`, `@NotBlank`, `@Email` 등)
 
 ### Redis
