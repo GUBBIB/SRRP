@@ -20,13 +20,14 @@ backend/
      ├─ main/
      │   ├─ java/
      │   │   └─ com.github.gubbib/
-     │   │       ├─ Config/       # 시큐리티, CORS, JPA 설정 등
+     │   │       ├─ Config/       # Security Config.java 등
      │   │       ├─ Controller/   # REST API 컨트롤러 (@RestController 등)
      │   │       ├─ Domain/       # 엔티티 / 도메인 모델 (@Entity 등)
      │   │       ├─ Dto/          # 요청 / 응답 DTO
      │   │       ├─ Exception/    # 전역 및 도메인별 예외 관리 폴더
      │   │       ├─ JWT/          # JWT 기반 인증/인가 구현 (토큰 생성, 검증, 필터 등)
      │   │       ├─ Repository/   # JPA Repository 인터페이스
+     │   │       ├─ Security/     # 공통 보안 설정 및 기본 시큐리티 로직 
      │   │       ├─ Service/      # 서비스 계층 — 비즈니스 로직
      │   │       └─ BackendApplication.java   # @SpringBootApplication (메인 클래스)
      │   └─ resources/
