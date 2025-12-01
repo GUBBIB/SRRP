@@ -30,6 +30,11 @@ public class User {
     @Column(name="role", nullable = false,  length = 255)
     private UserRole role = UserRole.USER;
 
+    @Builder.Default
+    @Enumerated(EnumType.STRING)
+    @Column(name = "provider", nullable = false, length = 255)
+    private Provider provider = Provider.LOCAL;
+
     public User(String email, String password, String name, String nickname){
         this.email = email;
         this.password = password;
