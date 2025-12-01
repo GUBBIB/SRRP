@@ -1,6 +1,7 @@
 package com.github.gubbib.backend.Controller.Auth;
 
 import com.github.gubbib.backend.DTO.Auth.AuthResponseDTO;
+import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Service.Auth.AuthService;
@@ -23,6 +24,13 @@ public class AuthController {
     public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO requestDTO){
 
         AuthResponseDTO response = authService.register(requestDTO);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO requestDTO){
+
+        AuthResponseDTO response = authService.login(requestDTO);
         return ResponseEntity.ok(response);
     }
 
