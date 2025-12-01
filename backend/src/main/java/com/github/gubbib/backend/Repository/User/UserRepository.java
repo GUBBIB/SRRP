@@ -1,14 +1,14 @@
-package com.github.gubbib.backend.Repository;
+package com.github.gubbib.backend.Repository.User;
 
 import com.github.gubbib.backend.Domain.User.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
-    Optional<User> findById(Long id);
+public interface UserRepository extends JpaRepository<User,Long> {
+
     Optional<User> findByEmail(String email);
-    Optional<User> save(User user);
-    List<User> findAll();
-    
+    Optional<User> findByName(String name);
+    Optional<User> findByNickname(String nickname);
 }
