@@ -1,21 +1,25 @@
 package com.github.gubbib.backend.Service.Auth;
 
 import com.github.gubbib.backend.DTO.Auth.AuthResponseDTO;
+import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Exception.Auth.AuthEmailDuplicationException;
+import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
+import com.github.gubbib.backend.JWT.JwtTokenProvider;
 import com.github.gubbib.backend.Repository.User.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
+@RequiredArgsConstructor
 public class AuthServiceImp implements AuthService {
 
-    PasswordEncoder passwordEncoder;
-    UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
@@ -35,9 +39,8 @@ public class AuthServiceImp implements AuthService {
 
         User saved = userRepository.save(result);
 
-        // jwt 코드 추가 후 수정 예정
-        String accessToken = "dummy accessToken"; 
-        String refreshToken = "dummy refreshToken";
+        String accessToken = jwtTokenProvider.createAccessToken(saved);
+        String refreshToken = jwtTokenProvider.createRefreshToken(saved);
 
         return new AuthResponseDTO(
                 saved.getId(),
@@ -48,7 +51,23 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public AuthResponseDTO login(RegisterRequestDTO requestDTO) {
-        return null;
+    public AuthResponseDTO login(LoginRequestDTO requestDTO) {
+
+        // 이메일 비번 틀렸을 경우
+        User user = userRepository.findByEmail(requestDTO.email())
+                .orElseThrow(AuthInvalidCredentialsException::new);
+        if(!passwordEncoder.matches(requestDTO.password(), user.getPassword())){
+            throw new AuthInvalidCredentialsException();
+        }
+
+        String accessToken = jwtTokenProvider.createAccessToken(user);
+        String refreshToken = jwtTokenProvider.createRefreshToken(user);
+
+        return new AuthResponseDTO(
+                user.getId(),
+                user.getEmail(),
+                accessToken,
+                refreshToken
+        );
     }
 }
