@@ -34,7 +34,8 @@ public class AuthServiceImp implements AuthService {
 
         User saved = userRepository.save(result);
 
-        String accessToken = "dummy accessToken";
+        // jwt 코드 추가 후 수정 예정
+        String accessToken = "dummy accessToken"; 
         String refreshToken = "dummy refreshToken";
 
         return new AuthResponseDTO(
