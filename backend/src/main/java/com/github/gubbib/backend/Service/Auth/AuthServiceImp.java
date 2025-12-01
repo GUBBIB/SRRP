@@ -3,6 +3,8 @@ package com.github.gubbib.backend.Service.Auth;
 import com.github.gubbib.backend.DTO.Auth.AuthResponseDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Exception.Auth.AuthEmailDuplicationException;
+import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,12 +20,11 @@ public class AuthServiceImp implements AuthService {
     @Override
     public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
 
-//        예외 추가 예정
-//        if(userRepository.existsByEmail(requestDTO.email())){
-//            throw
-//        } else if(userRepository.existsByNickname(requestDTO.nickname())){
-//            throw
-//        }
+        if(userRepository.existsByEmail(requestDTO.email())){
+            throw new AuthEmailDuplicationException();
+        } else if(userRepository.existsByNickname(requestDTO.nickname())){
+            throw new UserNicknameDuplicationException();
+        }
 
         User result = User.builder()
                 .email(requestDTO.email())
