@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Domain.User;
 
+import com.github.gubbib.backend.Domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,7 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -41,5 +42,6 @@ public class User {
         this.name = name;
         this.nickname = nickname;
         this.role = UserRole.USER;
+        this.provider = Provider.LOCAL;
     }
 }
