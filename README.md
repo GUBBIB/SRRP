@@ -107,9 +107,6 @@ frontend/
  └── vite.config.js
 ```
 
-# 참고 
-- [[Java] Spring Boot 3.x Security + OAuth 2.0 Client 이해하고 적용하기 -1 : 초기 환경 구성 및 카카오, 네이버 로그인 사용자 정보 조회](https://adjh54.tistory.com/594)
-
 # 수정 필요
 - JwtAuthenticationFilter.java - 예외 사항 추가 필요
 - Oauth2UserInfo.java - ofXXX 메소드 함수 완성 필요
