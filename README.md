@@ -113,3 +113,4 @@ frontend/
 # 수정 필요
 - JwtAuthenticationFilter.java - 예외 사항 추가 필요
 - Oauth2UserInfo.java - ofXXX 메소드 함수 완성 필요
+- OAuth2SuccessHandler - redirect 경로 수정 필요
