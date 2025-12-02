@@ -2,6 +2,8 @@ package com.github.gubbib.backend.Config;
 
 import com.github.gubbib.backend.JWT.JwtAuthenticationFilter;
 import com.github.gubbib.backend.JWT.JwtTokenProvider;
+import com.github.gubbib.backend.Repository.User.UserRepository;
+import com.github.gubbib.backend.Service.Security.CustomOauth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,15 +21,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserRepository userRepository;
 
     public SecurityConfig(
-            JwtTokenProvider jwtTokenProvider) {
+            JwtTokenProvider jwtTokenProvider,
+            UserRepository userRepository
+    ) {
         this.jwtTokenProvider = jwtTokenProvider;
+        this.userRepository = userRepository;
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenProvider);
+        return new JwtAuthenticationFilter(jwtTokenProvider,  userRepository);
     }
 
     @Bean
@@ -38,7 +44,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            JwtAuthenticationFilter jwtAuthenticationFilter
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            CustomOauth2UserService customOauth2UserService
     ) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -49,6 +56,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
+                )
+                .oauth2Login(oauth -> oauth
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOauth2UserService)
+                        )
                 )
                 .addFilterBefore(jwtAuthenticationFilter, ExceptionTranslationFilter.class)
 //                .addFilterBefore(, JwtAuthenticationFilter.class) jwt exception filter 만들면 추가 예정

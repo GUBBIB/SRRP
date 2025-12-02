@@ -17,6 +17,16 @@ public record Oauth2UserInfo(
             case "kakao"    ->   ofKakao(attributes);
             case "naver"    ->   ofNaver(attributes);
             default -> throw new AuthProviderMismatchException();
-        }
+        };
+    }
+
+    private static Map<String, Object> ofGoogle(Map<String, Object> attributes){
+
+    }
+    private static Map<String, Object> ofKakao(Map<String, Object> attributes){
+
+    }
+    private static Map<String, Object> ofNaver(Map<String, Object> attributes){
+
     }
 }
