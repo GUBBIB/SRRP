@@ -1,0 +1,45 @@
+#Home .home-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#Home .home-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+#Home .home-desc {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* 메인 카드 박스 */
+#Home .home-card {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px 25px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+}
+
+#Home .home-card-title {
+  font-size: 22px;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+#Home .home-card-text {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 20px;
+}
