@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.JWT;
 
+import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.FilterChain;
@@ -7,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -28,6 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 Jws<Claims> claims = jwtTokenProvider.parseToken(token);
                 Long userId = Long.parseLong(claims.getBody().getSubject());
+
+                CustomUserPrincipal principal = "";
+
+                Authentication authentication = "";
+
             } catch (Exception e){
                 // 추후 수정
             }
