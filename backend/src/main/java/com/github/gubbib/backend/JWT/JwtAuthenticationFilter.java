@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
+    private static final String ACCESS_TOKEN_COOKIE_NAME = "Access_Token_Cookie";
 
     @Override
     protected void doFilterInternal(
@@ -32,9 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-        String header = request.getHeader("Authorization");
-        if(header !=null && header.startsWith("Bearer ")){
-            String token = header.substring(7);
+
+        String token = resolveToken(request);
+        if(token != null){
             try {
                 Jws<Claims> claims = jwtTokenProvider.parseToken(token);
                 Long userId = Long.parseLong(claims.getBody().getSubject());
@@ -49,9 +51,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e){
-                // 추후 수정
+                SecurityContextHolder.clearContext();
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return null;
+        }
+
+        for(Cookie cookie : cookies){
+            if(ACCESS_TOKEN_COOKIE_NAME.equals(cookie.getName())){
+                return cookie.getValue();
+            }
+        }
+
+        return null;
     }
 }

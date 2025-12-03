@@ -97,6 +97,13 @@ public class JwtTokenProvider {
     }
 
     // getter
+    public Long getAccessTokenValidityInMillis(){
+        return accessTokenValidityInMillis;
+    }
+    public Long getRefreshTokenValidityInMillis(){
+        return refreshTokenValidityInMillis;
+    }
+
     public Long getUserId(String token){
         return Long.parseLong(parseToken(token).getBody().getSubject());
     }
