@@ -1,6 +1,7 @@
 package com.github.gubbib.backend.Service.Auth;
 
 import com.github.gubbib.backend.DTO.Auth.AuthResponseDTO;
+import com.github.gubbib.backend.DTO.Auth.AuthResultDTO;
 import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
@@ -9,20 +10,26 @@ import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.JWT.JwtTokenProvider;
 import com.github.gubbib.backend.Repository.User.UserRepository;
+import com.github.gubbib.backend.Service.Security.JwtCookieService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AuthServiceImp implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtCookieService jwtCookieService;
 
     @Override
-    public AuthResponseDTO register(RegisterRequestDTO requestDTO) {
+    public AuthResultDTO register(RegisterRequestDTO requestDTO) {
 
         if(userRepository.existsByEmail(requestDTO.email())){
             throw new AuthEmailDuplicationException();
@@ -39,19 +46,24 @@ public class AuthServiceImp implements AuthService {
 
         User saved = userRepository.save(result);
 
-        String accessToken = jwtTokenProvider.createAccessToken(saved);
-        String refreshToken = jwtTokenProvider.createRefreshToken(saved);
+        AuthResponseDTO authResponseDTO = AuthResponseDTO.builder()
+                .userId(saved.getId())
+                .email(saved.getEmail())
+                .nickname(saved.getNickname())
+                .build();
 
-        return new AuthResponseDTO(
-                saved.getId(),
-                saved.getEmail(),
-                accessToken,
-                refreshToken
+        ResponseCookie accessTokenCookie = jwtCookieService.createAccessToken(saved);
+        ResponseCookie refreshTokenCookie = jwtCookieService.createRefreshToken(saved);
+
+        return new AuthResultDTO(
+                authResponseDTO,
+                accessTokenCookie,
+                refreshTokenCookie
         );
     }
 
     @Override
-    public AuthResponseDTO login(LoginRequestDTO requestDTO) {
+    public AuthResultDTO login(LoginRequestDTO requestDTO) {
 
         // 이메일 비번 틀렸을 경우
         User user = userRepository.findByEmail(requestDTO.email())
@@ -60,14 +72,28 @@ public class AuthServiceImp implements AuthService {
             throw new AuthInvalidCredentialsException();
         }
 
-        String accessToken = jwtTokenProvider.createAccessToken(user);
-        String refreshToken = jwtTokenProvider.createRefreshToken(user);
+        ResponseCookie accessTokenCookie = jwtCookieService.createAccessToken(user);
+        ResponseCookie refreshTokenCookie = jwtCookieService.createRefreshToken(user);
 
-        return new AuthResponseDTO(
-                user.getId(),
-                user.getEmail(),
-                accessToken,
-                refreshToken
+        AuthResponseDTO authResponseDTO = AuthResponseDTO.builder()
+                .userId(user.getId())
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .build();
+
+        return new AuthResultDTO(
+                authResponseDTO,
+                accessTokenCookie,
+                refreshTokenCookie
+        );
+    }
+
+    @Override
+    public AuthResultDTO logout() {
+        return new AuthResultDTO(
+                null,
+                jwtCookieService.clearAccessTokenCookie(),
+                jwtCookieService.clearRefreshTokenCookie()
         );
     }
 }
