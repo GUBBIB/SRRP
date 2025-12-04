@@ -1,6 +1,7 @@
 package com.github.gubbib.backend.Service.User;
 
 import com.github.gubbib.backend.DTO.User.UserInfoDTO;
+import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
 import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
@@ -13,6 +14,6 @@ public interface UserService {
     User checkUser(CustomUserPrincipal userPrincipal);
     UserInfoDTO me(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
     List<UserMyPostDTO> myPostList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
-    List<UserMyPostDTO> myCommentList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
+    List<UserMyCommentDTO> myCommentList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
 
 }

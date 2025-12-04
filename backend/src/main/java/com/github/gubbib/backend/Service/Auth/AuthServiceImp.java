@@ -25,7 +25,6 @@ public class AuthServiceImp implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
     private final JwtCookieService jwtCookieService;
 
     @Override
