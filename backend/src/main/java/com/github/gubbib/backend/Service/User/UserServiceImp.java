@@ -58,7 +58,7 @@ public class UserServiceImp implements UserService {
     public List<UserMyPostDTO> myCommentList(CustomUserPrincipal userPrincipal) {
         User user = checkUser(userPrincipal);
 
-        List<UserMyCommentDTO> getMyComments = commentRepository.
+        List<UserMyCommentDTO> getMyComments = commentRepository.findMyCommentsByUserId(user.getId());
         return List.of();
     }
 }
