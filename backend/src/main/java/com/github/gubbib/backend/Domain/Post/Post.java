@@ -7,6 +7,7 @@ import com.github.gubbib.backend.Domain.User.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,6 +35,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 }

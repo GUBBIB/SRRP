@@ -58,5 +58,6 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.role = UserRole.USER;
         this.provider = Provider.LOCAL;
+        this.profile_image_url = "default";
     }
 }

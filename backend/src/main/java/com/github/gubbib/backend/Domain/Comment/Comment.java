@@ -38,6 +38,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
+    @Builder.Default
     @OneToMany(mappedBy = "parent")
     private List<Comment> comments = new ArrayList<>();
 }
