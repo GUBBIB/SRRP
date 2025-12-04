@@ -26,7 +26,7 @@ public class Board extends BaseEntity {
     @Column(name = "description",  nullable = false, length = 255)
     private String description;
 
-    @OneToMany(mappedBy = "board_id")
+    @OneToMany(mappedBy = "board")
     private List<Post> posts = new ArrayList<>();
 
 }

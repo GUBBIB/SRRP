@@ -45,9 +45,9 @@ public class User extends BaseEntity {
     private Provider provider = Provider.LOCAL;
 
     // 관계
-    @OneToMany(mappedBy = "user_id")
+    @OneToMany(mappedBy = "user")
     private List<Post>  posts;
-    @OneToMany(mappedBy = "user_id")
+    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
 

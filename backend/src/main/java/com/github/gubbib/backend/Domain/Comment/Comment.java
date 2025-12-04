@@ -38,6 +38,6 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
-    @OneToMany(mappedBy = "parent_id")
+    @OneToMany(mappedBy = "parent")
     private List<Comment> comments = new ArrayList<>();
 }
