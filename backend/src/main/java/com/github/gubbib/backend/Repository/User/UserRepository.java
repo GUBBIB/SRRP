@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Repository.User;
 
+import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

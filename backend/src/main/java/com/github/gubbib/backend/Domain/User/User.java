@@ -1,8 +1,12 @@
 package com.github.gubbib.backend.Domain.User;
 
 import com.github.gubbib.backend.Domain.BaseEntity;
+import com.github.gubbib.backend.Domain.Comment.Comment;
+import com.github.gubbib.backend.Domain.Post.Post;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +30,10 @@ public class User extends BaseEntity {
     @Column(name = "nickname", nullable = false, length = 255, unique = true)
     private String nickname;
 
+    @Column(name = "profile_image_url", nullable = false, length = 255)
+    private String profile_image_url;
+
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name="role", nullable = false,  length = 255)
@@ -35,6 +43,13 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false, length = 255)
     private Provider provider = Provider.LOCAL;
+
+    // 관계
+    @OneToMany(mappedBy = "user_id")
+    private List<Post>  posts;
+    @OneToMany(mappedBy = "user_id")
+    private List<Comment> comments;
+
 
     public User(String email, String password, String name, String nickname){
         this.email = email;
