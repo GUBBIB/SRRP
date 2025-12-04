@@ -16,7 +16,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 p.content,
                 b.name,
                 COUNT(c),
-                u
+                p.id,
+                u.id,
+                u.nickname,
+                u.profile_image_url,
+                p.createdAt
             )
         FROM Post p
         JOIN p.user u
