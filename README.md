@@ -15,12 +15,12 @@
 
 ```
 backend/
- ├─ build.gradle   (또는 pom.xml)
+ ├─ build.gradle
  └─ src/
      ├─ main/
      │   ├─ java/
      │   │   └─ com.github.gubbib/
-     │   │       ├─ Config/       # Security Config.java 등
+     │   │       ├─ Config/       # 각종 Config 설정 등
      │   │       ├─ Controller/   # REST API 컨트롤러 (@RestController 등)
      │   │       ├─ Domain/       # 엔티티 / 도메인 모델 (@Entity 등)
      │   │       ├─ Dto/          # 요청 / 응답 DTO
