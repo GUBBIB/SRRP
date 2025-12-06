@@ -1,6 +1,7 @@
 package com.github.gubbib.backend.Controller.User;
 
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
+import com.github.gubbib.backend.DTO.User.SearchUserInfoDTO;
 import com.github.gubbib.backend.DTO.User.UserInfoDTO;
 import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
 import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -109,5 +111,16 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(userMyCommentList);
+    }
+
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<SearchUserInfoDTO> searchUser(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @PathVariable Long userId
+    ){
+        SearchUserInfoDTO searchUserInfoDTO = userService.searchUserInfo(userPrincipal, userId);
+
+        return ResponseEntity.ok()
+                .body(searchUserInfoDTO);
     }
 }

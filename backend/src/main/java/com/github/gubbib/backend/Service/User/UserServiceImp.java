@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Service.User;
 
+import com.github.gubbib.backend.DTO.User.SearchUserInfoDTO;
 import com.github.gubbib.backend.DTO.User.UserInfoDTO;
 import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
 import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
@@ -60,5 +61,10 @@ public class UserServiceImp implements UserService {
 
         List<UserMyCommentDTO> getMyComments = commentRepository.findMyCommentsByUserId(user.getId());
         return List.of();
+    }
+
+    @Override
+    public SearchUserInfoDTO searchUserInfo(CustomUserPrincipal customUserPrincipal, Long userId) {
+        return null;
     }
 }
