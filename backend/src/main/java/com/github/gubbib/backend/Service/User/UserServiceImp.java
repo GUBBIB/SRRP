@@ -26,8 +26,14 @@ public class UserServiceImp implements UserService {
     private final CommentRepository commentRepository;
 
     @Override
-    public User checkUser(CustomUserPrincipal customUserPrincipal) {
-        return userRepository.findById(customUserPrincipal.getUser().getId())
+    public User checkUser(CustomUserPrincipal userPrincipal) {
+        return userRepository.findById(userPrincipal.getUser().getId())
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public User findUser(Long userId) {
+        return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
     }
 
@@ -64,7 +70,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public SearchUserInfoDTO searchUserInfo(CustomUserPrincipal customUserPrincipal, Long userId) {
-        return null;
+    public SearchUserInfoDTO searchUserInfo(CustomUserPrincipal userPrincipal, Long userId) {
+        User user = checkUser(userPrincipal);
+
+        User searchUser = findUser(userId);
+
+        SearchUserInfoDTO getSearchUserInfo = SearchUserInfoDTO.builder()
+                .email(searchUser.getEmail())
+                .name(searchUser.getName())
+                .nickname(searchUser.getNickname())
+                .profile_image_url(searchUser.getProfile_image_url())
+                .build();
+
+        return  getSearchUserInfo;
     }
 }
