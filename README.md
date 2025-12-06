@@ -110,4 +110,3 @@ frontend/
 # 수정 필요
 - Oauth2UserInfo.java - ofXXX 메소드 함수 완성 필요
 - OAuth2SuccessHandler - redirect 경로 수정 필요
-- UserService - searchUserInfo 메소드 코드 추가 필요
