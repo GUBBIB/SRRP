@@ -134,6 +134,17 @@ public class UserController {
                 .body(searchUserInfoDTO);
     }
 
+
+    @GetMapping("/check-nickname")
+    public ResponseEntity<Void> checkNickname(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestParam String nickname
+    ){
+        userService.checkNickname(userPrincipal, nickname);
+
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/modify/nickname")
     public ResponseEntity<Void> modifyNickname(
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
@@ -144,5 +155,4 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("")
 }

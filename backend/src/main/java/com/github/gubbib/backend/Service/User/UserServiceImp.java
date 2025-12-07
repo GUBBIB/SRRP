@@ -84,6 +84,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public void checkNickname(CustomUserPrincipal userPrincipal, String nickname) {
+
+        if(userRepository.existsByNickname(nickname)) {
+            throw new UserNicknameDuplicationException();
+        }
+    }
+
+    @Override
     public void modifyNickname(CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname) {
         User user = checkUser(userPrincipal);
 
