@@ -113,6 +113,22 @@ public class UserController {
                 .body(userMyCommentList);
     }
 
+    @Operation(
+            summary = "유저 조회",
+            description = "다른 유저를 조회한다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = SearchUserInfoDTO.class))
+                    )
+            ),
+            @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
     @GetMapping("/users/{userId}")
     public ResponseEntity<SearchUserInfoDTO> searchUser(
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
