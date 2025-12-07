@@ -109,18 +109,32 @@ public class UserController {
 
     @Operation(
             summary = "유저 조회",
-            description = "다른 유저를 조회한다."
+            description = "다른 유저의 정보를 조회한다."
     )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
                     description = "조회 성공",
                     content = @Content(
-                            array = @ArraySchema(schema = @Schema(implementation = SearchUserInfoDTO.class))
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = SearchUserInfoDTO.class)
                     )
             ),
-            @ApiResponse(responseCode = "401", description = "인증 실패 (토큰 없음/만료)",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "조회 대상 유저 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
             )
     })
     @GetMapping("/{userId}")
@@ -134,7 +148,32 @@ public class UserController {
                 .body(searchUserInfoDTO);
     }
 
-
+    @Operation(
+            summary = "닉네임 중복 확인",
+            description = "입력한 닉네임이 사용 가능한지 확인한다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "닉네임 사용 가능 (중복 없음)"
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "닉네임 중복됨",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
     @GetMapping("/check-nickname")
     public ResponseEntity<Void> checkNickname(
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
@@ -145,6 +184,40 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "닉네임 변경",
+            description = "현재 로그인된 사용자의 닉네임을 변경한다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "닉네임 변경 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "입력 값 오류",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "닉네임 중복",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
     @PutMapping("/modify/nickname")
     public ResponseEntity<Void> modifyNickname(
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
