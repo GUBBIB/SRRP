@@ -1,10 +1,7 @@
 package com.github.gubbib.backend.Controller.User;
 
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
-import com.github.gubbib.backend.DTO.User.SearchUserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
-import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
+import com.github.gubbib.backend.DTO.User.*;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.User.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,10 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -138,5 +132,15 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(searchUserInfoDTO);
+    }
+
+    @PutMapping("/modify/nickname")
+    public ResponseEntity<Void> modifyNickname(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody ModifyUserNicknameDTO modifyUserNicknameDTO
+    ){
+        userService.modifyNickname(userPrincipal, modifyUserNicknameDTO);
+
+        return ResponseEntity.noContent().build();
     }
 }

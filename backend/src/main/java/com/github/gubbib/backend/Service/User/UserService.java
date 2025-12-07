@@ -1,9 +1,6 @@
 package com.github.gubbib.backend.Service.User;
 
-import com.github.gubbib.backend.DTO.User.SearchUserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
-import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
+import com.github.gubbib.backend.DTO.User.*;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import org.springframework.http.ResponseEntity;
@@ -19,4 +16,5 @@ public interface UserService {
     List<UserMyCommentDTO> myCommentList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
 
     SearchUserInfoDTO searchUserInfo(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, Long userId);
+    void modifyNickname(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname);
 }

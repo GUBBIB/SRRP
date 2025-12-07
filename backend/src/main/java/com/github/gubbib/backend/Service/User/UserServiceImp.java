@@ -1,11 +1,9 @@
 package com.github.gubbib.backend.Service.User;
 
-import com.github.gubbib.backend.DTO.User.SearchUserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserInfoDTO;
-import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
-import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
+import com.github.gubbib.backend.DTO.User.*;
 import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.Exception.User.UserNotFoundException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
@@ -83,5 +81,17 @@ public class UserServiceImp implements UserService {
                 .build();
 
         return  getSearchUserInfo;
+    }
+
+    @Override
+    public void modifyNickname(CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname) {
+        User user = checkUser(userPrincipal);
+
+        if(userRepository.existsByNickname(modifyNickname.modifyNick())){
+            throw new UserNicknameDuplicationException();
+        }
+
+        user.setNickname(modifyNickname.modifyNick());
+        userRepository.save(user);
     }
 }
