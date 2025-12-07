@@ -123,7 +123,7 @@ public class UserController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<SearchUserInfoDTO> searchUser(
             @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @PathVariable Long userId
@@ -143,4 +143,6 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("")
 }
