@@ -2,6 +2,7 @@ package com.github.gubbib.backend.Domain.User;
 
 import com.github.gubbib.backend.Domain.BaseEntity;
 import com.github.gubbib.backend.Domain.Comment.Comment;
+import com.github.gubbib.backend.Domain.Like.Like;
 import com.github.gubbib.backend.Domain.Post.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,13 +44,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false, length = 255)
     private Provider provider = Provider.LOCAL;
-
-    // 관계
-    @OneToMany(mappedBy = "user")
-    private List<Post>  posts;
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments;
-
 
     public User(String email, String password, String name, String nickname){
         this.email = email;

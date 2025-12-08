@@ -1,0 +1,40 @@
+package com.github.gubbib.backend.Domain.Like;
+
+import com.github.gubbib.backend.Domain.BaseEntity;
+import com.github.gubbib.backend.Domain.Comment.Comment;
+import com.github.gubbib.backend.Domain.Post.Post;
+import com.github.gubbib.backend.Domain.User.User;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@Getter
+@Setter
+@Table(
+        name = "likes",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"post_id", "user_id"}),
+                @UniqueConstraint(columnNames = {"comment_id", "user_id"})
+        }
+)
+public class Like extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private LikeType type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+}

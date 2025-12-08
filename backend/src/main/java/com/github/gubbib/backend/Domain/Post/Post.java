@@ -26,6 +26,8 @@ public class Post extends BaseEntity {
     private String title;
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
+    @Column(name = "viewCount", nullable = false)
+    private Long viewCount = 0L;
 
     // 관계
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,8 +36,4 @@ public class Post extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments = new ArrayList<>();
 }

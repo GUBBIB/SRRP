@@ -37,8 +37,4 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Comment parent;
-
-    @Builder.Default
-    @OneToMany(mappedBy = "parent")
-    private List<Comment> comments = new ArrayList<>();
 }

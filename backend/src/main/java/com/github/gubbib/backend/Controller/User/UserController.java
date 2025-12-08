@@ -70,7 +70,7 @@ public class UserController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
-    @GetMapping("/my-post")
+    @GetMapping("/my/posts")
     public ResponseEntity<List<UserMyPostDTO>> myPost(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -97,7 +97,7 @@ public class UserController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
             )
     })
-    @GetMapping("/my-comment")
+    @GetMapping("/my/comments")
     public ResponseEntity<List<UserMyCommentDTO>> myComment(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -105,6 +105,16 @@ public class UserController {
 
         return ResponseEntity.ok()
                 .body(userMyCommentList);
+    }
+
+    @GetMapping("/my/like/post")
+    public ResponseEntity<List<UserMyLikePostDTO>> myLike(
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ) {
+        List<UserMyLikePostDTO> userMyLikePostList = userService.myLikePostList(userPrincipal);
+
+        return ResponseEntity.ok()
+                .body(userMyLikePostList);
     }
 
     @Operation(
@@ -139,7 +149,7 @@ public class UserController {
     })
     @GetMapping("/{userId}")
     public ResponseEntity<SearchUserInfoDTO> searchUser(
-            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @PathVariable Long userId
     ){
         SearchUserInfoDTO searchUserInfoDTO = userService.searchUserInfo(userPrincipal, userId);
@@ -176,7 +186,7 @@ public class UserController {
     })
     @GetMapping("/check-nickname")
     public ResponseEntity<Void> checkNickname(
-            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @RequestParam String nickname
     ){
         userService.checkNickname(userPrincipal, nickname);
@@ -220,7 +230,7 @@ public class UserController {
     })
     @PutMapping("/modify/nickname")
     public ResponseEntity<Void> modifyNickname(
-            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @RequestBody ModifyUserNicknameDTO modifyUserNicknameDTO
     ){
         userService.modifyNickname(userPrincipal, modifyUserNicknameDTO);
@@ -247,12 +257,14 @@ public class UserController {
     })
     @PostMapping("/modify/password")
     public ResponseEntity<Void> modifyPassword(
-            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @RequestBody ModifyUserPasswordDTO modifyUserPasswordDTO
     ){
         userService.modifyPassword(userPrincipal, modifyUserPasswordDTO);
 
         return ResponseEntity.noContent().build();
     }
+
+
 
 }
