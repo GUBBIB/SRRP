@@ -228,4 +228,31 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(
+            summary = "비밀번호 변경",
+            description = "현재 비밀번호를 검증한 뒤 새 비밀번호로 변경한다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "비밀번호 변경 성공 (응답 본문 없음)"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "현재 비밀번호 불일치 또는 유효성 검증 실패",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
+    @PostMapping("/modify/password")
+    public ResponseEntity<Void> modifyPassword(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody ModifyUserPasswordDTO modifyUserPasswordDTO
+    ){
+        userService.modifyPassword(userPrincipal, modifyUserPasswordDTO);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

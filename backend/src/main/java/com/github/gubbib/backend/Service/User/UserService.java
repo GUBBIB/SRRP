@@ -17,5 +17,7 @@ public interface UserService {
 
     SearchUserInfoDTO searchUserInfo(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, Long userId);
     void checkNickname(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, String nickname);
+
     void modifyNickname(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname);
+    void modifyPassword(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, ModifyUserPasswordDTO modifyUserPasswordDTO);
 }

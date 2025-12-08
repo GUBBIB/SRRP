@@ -1,27 +1,32 @@
 package com.github.gubbib.backend.Service.User;
 
 import com.github.gubbib.backend.DTO.User.*;
-import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.Exception.User.UserNotFoundException;
+import com.github.gubbib.backend.Exception.User.UserPasswordNotMatchException;
+import com.github.gubbib.backend.Exception.User.UserSameAsOldPasswordException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User checkUser(CustomUserPrincipal userPrincipal) {
@@ -100,6 +105,22 @@ public class UserServiceImp implements UserService {
         }
 
         user.setNickname(modifyNickname.modifyNick());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void modifyPassword(CustomUserPrincipal userPrincipal, ModifyUserPasswordDTO modifyUserPasswordDTO) {
+        User user = checkUser(userPrincipal);
+
+        if(!passwordEncoder.matches(modifyUserPasswordDTO.currentPassword(),  user.getPassword())){
+            throw new UserPasswordNotMatchException();
+        }
+
+        if (passwordEncoder.matches(modifyUserPasswordDTO.currentPassword(), modifyUserPasswordDTO.modifyPassword())) {
+            throw new UserSameAsOldPasswordException();
+        }
+
+        user.setPassword(passwordEncoder.encode(modifyUserPasswordDTO.modifyPassword()));
         userRepository.save(user);
     }
 }
