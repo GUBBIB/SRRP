@@ -26,6 +26,7 @@ public class Post extends BaseEntity {
     private String title;
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
+    @Builder.Default
     @Column(name = "viewCount", nullable = false)
     private Long viewCount = 0L;
 

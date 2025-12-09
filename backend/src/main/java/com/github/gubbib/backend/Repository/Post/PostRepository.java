@@ -25,10 +25,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         FROM Post p
         JOIN p.user u
         JOIN p.board b
-        LEFT JOIN p.comments c
+        LEFT JOIN Comment c ON c.post = p
         WHERE u.id = :userId
         GROUP BY p.id, b.name, u
-               
     """)
     List<UserMyPostDTO> findMyPostByUserId(Long userId);
 }
