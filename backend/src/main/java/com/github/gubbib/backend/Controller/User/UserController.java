@@ -107,14 +107,66 @@ public class UserController {
                 .body(userMyCommentList);
     }
 
+    @Operation(
+            summary = "내가 좋아요한 게시글 목록 조회",
+            description = "현재 로그인한 유저가 좋아요를 누른 게시글 목록을 최신순으로 조회한다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = UserMyLikePostDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
     @GetMapping("/my/like/post")
-    public ResponseEntity<List<UserMyLikePostDTO>> myLike(
+    public ResponseEntity<List<UserMyLikePostDTO>> myLikePost(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
         List<UserMyLikePostDTO> userMyLikePostList = userService.myLikePostList(userPrincipal);
 
         return ResponseEntity.ok()
                 .body(userMyLikePostList);
+    }
+
+    @Operation(
+            summary = "내가 좋아요한 댓글 목록 조회",
+            description = "현재 로그인한 유저가 좋아요를 누른 댓글 목록을 최신순으로 조회한다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "조회 성공",
+                    content = @Content(
+                            array = @ArraySchema(schema = @Schema(implementation = UserMyLikeCommentDTO.class))
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패 (토큰 없음/만료)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponseDTO.class)
+                    )
+            )
+    })
+    @GetMapping("/my/like/comment")
+    public ResponseEntity<List<UserMyLikeCommentDTO>> myLikeComment(
+            @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ) {
+        List<UserMyLikeCommentDTO> userMyLikeCommentList = userService.myLikeCommentList(userPrincipal);
+
+        return ResponseEntity.ok()
+                .body(userMyLikeCommentList);
     }
 
     @Operation(

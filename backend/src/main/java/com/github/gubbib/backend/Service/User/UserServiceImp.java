@@ -7,6 +7,7 @@ import com.github.gubbib.backend.Exception.User.UserNotFoundException;
 import com.github.gubbib.backend.Exception.User.UserPasswordNotMatchException;
 import com.github.gubbib.backend.Exception.User.UserSameAsOldPasswordException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
+import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
@@ -27,6 +28,7 @@ public class UserServiceImp implements UserService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LikeRepository likeRepository;
 
     @Override
     public User checkUser(CustomUserPrincipal userPrincipal) {
@@ -69,7 +71,23 @@ public class UserServiceImp implements UserService {
         User user = checkUser(userPrincipal);
 
         List<UserMyCommentDTO> getMyComments = commentRepository.findMyCommentsByUserId(user.getId());
-        return List.of();
+        return getMyComments;
+    }
+
+    @Override
+    public List<UserMyLikePostDTO> myLikePostList(CustomUserPrincipal userPrincipal) {
+        User user = checkUser(userPrincipal);
+
+        List<UserMyLikePostDTO> getMyLikePosts = likeRepository.findMyLikePostByUserId(user.getId());
+        return getMyLikePosts;
+    }
+
+    @Override
+    public List<UserMyLikeCommentDTO> myLikeCommentList(CustomUserPrincipal userPrincipal) {
+        User user = checkUser(userPrincipal);
+
+        List<UserMyLikeCommentDTO> getMyLikeComments = likeRepository.findMyLikeCommentByUserId(user.getId());
+        return getMyLikeComments;
     }
 
     @Override

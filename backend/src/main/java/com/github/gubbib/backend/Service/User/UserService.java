@@ -14,7 +14,8 @@ public interface UserService {
     UserInfoDTO me(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
     List<UserMyPostDTO> myPostList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
     List<UserMyCommentDTO> myCommentList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
-
+    List<UserMyLikePostDTO> myLikePostList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
+    List<UserMyLikeCommentDTO> myLikeCommentList(@AuthenticationPrincipal CustomUserPrincipal userPrincipal);
     SearchUserInfoDTO searchUserInfo(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, Long userId);
     void checkNickname(@AuthenticationPrincipal CustomUserPrincipal userPrincipal, String nickname);
 
