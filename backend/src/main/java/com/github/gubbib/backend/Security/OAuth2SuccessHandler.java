@@ -28,8 +28,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         String redirectUrl;
         if(principal != null && principal.isNewUser()){
+            log.debug("✅ [OAuth2] 신규 가입자");
             redirectUrl = "http://localhost:8080/swagger-ui/index.html";
         } else {
+            log.debug("✅ [OAuth2] 기존 가입자");
             redirectUrl = "http://localhost:8080/swagger-ui/index.html";
         }
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
