@@ -9,10 +9,7 @@ import lombok.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Getter
-@Setter
 @Table(
         name = "likes",
         uniqueConstraints = {
@@ -37,4 +34,26 @@ public class Like extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    public static Like createPost(Post post, User user) {
+        Like l = new Like();
+
+        l.type = LikeType.POST;
+        l.post = post;
+        l.comment = null;
+        l.user = user;
+
+        return l;
+    }
+
+    public static Like createComment(Comment comment, User user) {
+        Like l = new Like();
+
+        l.type = LikeType.COMMENT;
+        l.post = null;
+        l.comment = comment;
+        l.user = user;
+
+        return l;
+    }
 }

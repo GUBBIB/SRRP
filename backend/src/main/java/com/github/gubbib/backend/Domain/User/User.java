@@ -1,20 +1,14 @@
 package com.github.gubbib.backend.Domain.User;
 
 import com.github.gubbib.backend.Domain.BaseEntity;
-import com.github.gubbib.backend.Domain.Comment.Comment;
-import com.github.gubbib.backend.Domain.Like.Like;
-import com.github.gubbib.backend.Domain.Post.Post;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.UUID;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Getter
-@Setter
 @Table(name = "users")
 public class User extends BaseEntity {
     @Id
@@ -28,30 +22,48 @@ public class User extends BaseEntity {
     private String password;
     @Column(name = "name",  nullable = false,  length = 255)
     private String name;
+    @Setter
     @Column(name = "nickname", nullable = false, length = 255, unique = true)
     private String nickname;
 
-    @Column(name = "profile_image_url", nullable = false, length = 255)
+    @Column(name = "profile_image_url", length = 255)
     private String profile_image_url;
 
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name="role", nullable = false,  length = 255)
     private UserRole role = UserRole.USER;
 
-    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(name = "provider", nullable = false, length = 255)
     private Provider provider = Provider.LOCAL;
 
-    public User(String email, String password, String name, String nickname){
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.nickname = nickname;
-        this.role = UserRole.USER;
-        this.provider = Provider.LOCAL;
-        this.profile_image_url = "default";
+    public static User createLocal(String email, String password, String name, String nickname){
+        User u = new User();
+
+        u.email = email;
+        u.password = password;
+        u.name = name;
+        u.nickname = nickname;
+        u.provider = Provider.LOCAL;
+
+        return u;
     }
+
+    public static User createOauth2(String email, String name, String nickname, Provider provider){
+        User u = new User();
+
+        u.email = email;
+        u.password = UUID.randomUUID().toString();
+        u.name = name;
+        u.nickname = nickname;
+        u.provider = provider;
+
+        return u;
+    }
+
+    public void changePassword(String password){
+        this.password = password;
+    }
+
 }

@@ -8,13 +8,11 @@ import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Exception.Auth.AuthEmailDuplicationException;
 import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
-import com.github.gubbib.backend.JWT.JwtTokenProvider;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Service.Security.JwtCookieService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +34,12 @@ public class AuthServiceImp implements AuthService {
             throw new UserNicknameDuplicationException();
         }
 
-        User result = User.builder()
-                .email(requestDTO.email())
-                .name(requestDTO.name())
-                .password(passwordEncoder.encode(requestDTO.password()))
-                .nickname(requestDTO.nickname())
-                .build();
+        String email = requestDTO.email();
+        String name = requestDTO.name();
+        String password = passwordEncoder.encode(requestDTO.password());
+        String nickname = requestDTO.nickname();
+
+        User result = User.createLocal(email, name, password, nickname);
 
         User saved = userRepository.save(result);
 

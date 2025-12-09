@@ -11,17 +11,16 @@ import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImp implements UserService {
 
     private final UserRepository userRepository;
@@ -138,7 +137,7 @@ public class UserServiceImp implements UserService {
             throw new UserSameAsOldPasswordException();
         }
 
-        user.setPassword(passwordEncoder.encode(modifyUserPasswordDTO.modifyPassword()));
+        user.changePassword(passwordEncoder.encode(modifyUserPasswordDTO.modifyPassword()));
         userRepository.save(user);
     }
 }

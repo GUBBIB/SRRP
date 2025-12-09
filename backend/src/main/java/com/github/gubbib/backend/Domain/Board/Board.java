@@ -10,10 +10,7 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Getter
-@Setter
 @Table(name = "boards")
 public class Board extends BaseEntity {
 
@@ -25,4 +22,13 @@ public class Board extends BaseEntity {
     private String name;
     @Column(name = "description",  nullable = false, length = 255)
     private String description;
+
+    public static Board create(String name, String description) {
+        Board b = new Board();
+
+        b.name = name;
+        b.description = description;
+
+        return b;
+    }
 }

@@ -11,11 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 @Getter
-@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "posts")
 public class Post extends BaseEntity {
     @Id
@@ -26,15 +23,30 @@ public class Post extends BaseEntity {
     private String title;
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
     private String content;
-    @Builder.Default
     @Column(name = "viewCount", nullable = false)
     private Long viewCount = 0L;
 
     // 관계
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
     private Board board;
+
+    public static Post create(String title, String content, User user, Board board) {
+        Post post = new Post();
+
+        post.title = title;
+        post.content = content;
+        post.viewCount = 0L;
+
+        post.setUser(user);
+        post.setBoard(board);
+
+        return post;
+    }
+
 }

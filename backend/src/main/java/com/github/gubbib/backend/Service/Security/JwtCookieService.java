@@ -2,12 +2,12 @@ package com.github.gubbib.backend.Service.Security;
 
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.JWT.JwtTokenProvider;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtCookieService {
 
     private final JwtTokenProvider jwtTokenProvider;
