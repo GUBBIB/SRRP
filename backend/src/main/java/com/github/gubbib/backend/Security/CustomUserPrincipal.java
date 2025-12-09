@@ -25,15 +25,9 @@ public class CustomUserPrincipal implements UserDetails, OAuth2User {
         this.oauth2Attributes = Collections.emptyMap();
     }
 
-    public CustomUserPrincipal(User user, Map<String, Object> oauth2Attributes, boolean newUser) {
-        this.user = user;
-
-        if (user != null && user.getRole() != null) {
-            this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().getRoleName()));
-        } else {
-            this.authorities = List.of(new SimpleGrantedAuthority("ROLE_GUEST"));
-        }
-
+    public CustomUserPrincipal(Map<String, Object> oauth2Attributes, boolean newUser) {
+        this.user = null;
+        this.authorities = List.of(new SimpleGrantedAuthority("ROLE_GUEST"));
         this.newUser = newUser;
         this.oauth2Attributes = oauth2Attributes;
     }
@@ -57,11 +51,13 @@ public class CustomUserPrincipal implements UserDetails, OAuth2User {
 
     @Override
     public @Nullable String getPassword() {
-        return user.getPassword();
+        return user != null ? user.getPassword() : null;
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();
+        if(user != null && user.getEmail() != null) return user.getEmail();
+        Object emailAttr =  oauth2Attributes.get("email");
+        return  emailAttr != null ? emailAttr.toString() : "";
     }
 }

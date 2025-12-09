@@ -3,6 +3,7 @@ package com.github.gubbib.backend.Config;
 import com.github.gubbib.backend.JWT.JwtAuthenticationFilter;
 import com.github.gubbib.backend.JWT.JwtTokenProvider;
 import com.github.gubbib.backend.Repository.User.UserRepository;
+import com.github.gubbib.backend.Security.OAuth2SuccessHandler;
 import com.github.gubbib.backend.Service.Security.CustomOauth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +51,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             JwtAuthenticationFilter jwtAuthenticationFilter,
-            CustomOauth2UserService customOauth2UserService
+            CustomOauth2UserService customOauth2UserService,
+            OAuth2SuccessHandler oAuth2SuccessHandler
     ) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -73,6 +75,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOauth2UserService)
                         )
+                        .successHandler(oAuth2SuccessHandler)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, ExceptionTranslationFilter.class)
 //                .addFilterBefore(, JwtAuthenticationFilter.class) jwt exception filter 만들면 추가 예정
