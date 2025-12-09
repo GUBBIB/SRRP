@@ -80,6 +80,12 @@ backend/
 * **Spring Data Redis**
   Redis 기반 캐시, 세션, Refresh Token 저장 등을 위한 Key-Value 스토어 연동
 
+### Swagger
+* **Springdoc OpenAPI (springdoc-openapi-starter-webmvc-ui)**  
+  Swagger UI 제공 및 API 문서 자동 생성
+    - `@Operation`, `@ApiResponse`, `@Parameter` 등의 어노테이션을 통한 상세 문서화
+    - `/swagger-ui/index.html` 경로에서 API 문서 UI 제공
+    - JWT 인증 UI 연동(`bearerAuth`)을 통해 토큰 기반 테스트 지원
 ---
 
 # FRONTEND
