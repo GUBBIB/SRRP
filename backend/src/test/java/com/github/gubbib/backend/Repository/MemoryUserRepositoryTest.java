@@ -4,17 +4,13 @@ import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import jakarta.transaction.Transactional;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.List;
 import java.util.Optional;
 
-//@SpringBootTest
 @DataJpaTest
 @Transactional
 public class MemoryUserRepositoryTest {
@@ -24,7 +20,7 @@ public class MemoryUserRepositoryTest {
 
     @Test
     void saveAndFindById() {
-        User user = new User("test1@gmail.com", "testtest", "test1", "testNickName");
+        User user = User.createLocal("test1@gmail.com", "testtest", "test1", "testNickName");
         User saved = userRepository.save(user);
         Long savedId = saved.getId();
 
@@ -37,7 +33,7 @@ public class MemoryUserRepositoryTest {
 
     @Test
     void saveAndFindByEmail() {
-        User user = new User("test1@gmail.com", "testtest", "test1", "testNickName");
+        User user = User.createLocal("test1@gmail.com", "testtest", "test1", "testNickName");
         User saved = userRepository.save(user);
         String savedEmail = saved.getEmail();
 
@@ -50,7 +46,7 @@ public class MemoryUserRepositoryTest {
 
     @Test
     void saveAndFindByNickname() {
-        User user = new User("test1@gmail.com", "testtest", "test1", "testNickName");
+        User user = User.createLocal("test1@gmail.com", "testtest", "test1", "testNickName");
         User saved = userRepository.save(user);
 
         String savedNickname = saved.getNickname();
@@ -63,7 +59,7 @@ public class MemoryUserRepositoryTest {
 
     @Test
     void saveAndFindByName(){
-        User user = new User("test1@gmail.com", "testtest", "test1", "testNickName");
+        User user = User.createLocal("test1@gmail.com", "testtest", "test1", "testNickName");
         User saved = userRepository.save(user);
         String savedName = saved.getName();
 
@@ -75,9 +71,9 @@ public class MemoryUserRepositoryTest {
 
     @Test
     void saveDuplication(){
-        User user = new User("test1@gmail.com", "testtest", "test1", "testNickName");
+        User user = User.createLocal("test1@gmail.com", "testtest", "test1", "testNickName");
         User saved = userRepository.save(user);
-        User user2 = new User("test12@gmail.com", "testtest", "test1", "testNickName");
+        User user2 = User.createLocal("test12@gmail.com", "testtest", "test1", "testNickName");
 
         Assertions.assertThatThrownBy(() -> userRepository.saveAndFlush(user2))
                 .isInstanceOf(DataIntegrityViolationException.class);
