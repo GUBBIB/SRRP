@@ -34,7 +34,10 @@ public enum ErrorCode {
     USER_STATUS_INACTIVE(HttpStatus.BAD_REQUEST, "U005", "비활성화된 사용자입니다."),
     USER_PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST, "U006", "비밀번호가 일치하지 않습니다."),
     USER_FORBIDDEN(HttpStatus.FORBIDDEN, "U007", "사용자 권한이 충분하지 않습니다."),
-    USER_SAME_AS_OLD_PASSWORD(HttpStatus.CONFLICT, "U008", "이전 비밀번호와 동일합니다.");
+    USER_SAME_AS_OLD_PASSWORD(HttpStatus.CONFLICT, "U008", "이전 비밀번호와 동일합니다."),
+
+    // Board 관련
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "존재하지 않는 게시판입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

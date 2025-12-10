@@ -2,13 +2,9 @@ package com.github.gubbib.backend.Domain.Post;
 
 import com.github.gubbib.backend.Domain.BaseEntity;
 import com.github.gubbib.backend.Domain.Board.Board;
-import com.github.gubbib.backend.Domain.Comment.Comment;
 import com.github.gubbib.backend.Domain.User.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

@@ -10,15 +10,15 @@ import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Service.Security.JwtCookieService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class AuthServiceImp implements AuthService {
 
     private final PasswordEncoder passwordEncoder;
@@ -26,6 +26,7 @@ public class AuthServiceImp implements AuthService {
     private final JwtCookieService jwtCookieService;
 
     @Override
+    @Transactional(readOnly = false)
     public AuthResultDTO register(RegisterRequestDTO requestDTO) {
 
         if(userRepository.existsByEmail(requestDTO.email())){

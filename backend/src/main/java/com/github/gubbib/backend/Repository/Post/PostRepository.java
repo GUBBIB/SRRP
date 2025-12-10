@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Repository.Post;
 
+import com.github.gubbib.backend.DTO.Post.PostListDTO;
 import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
 import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
@@ -30,4 +31,22 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         GROUP BY p.id, b.name, u
     """)
     List<UserMyPostDTO> findMyPostByUserId(Long userId);
+
+    @Query("""
+        SELECT new com.github.gubbib.backend.DTO.Post.PostListDTO(
+                b.id,
+                p.id,
+                p.title,
+                u.nickname,
+                u.id,
+                ( SELECT CAST(COUNT(*) AS LONG) FROM Comment c WHERE c.post.id = p.id),
+                p.createdAt
+            )
+        FROM Post p
+        JOIN p.board b
+        JOIN p.user u
+        WHERE b.id = :boardId
+        ORDER BY p.createdAt DESC
+    """)
+    List<PostListDTO> findAllByBoardId(Long boardId);
 }
