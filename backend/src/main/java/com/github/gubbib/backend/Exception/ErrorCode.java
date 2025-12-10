@@ -37,7 +37,11 @@ public enum ErrorCode {
     USER_SAME_AS_OLD_PASSWORD(HttpStatus.CONFLICT, "U008", "이전 비밀번호와 동일합니다."),
 
     // Board 관련
-    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "존재하지 않는 게시판입니다.");
+    BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "존재하지 않는 게시판입니다."),
+
+    // Post 관련
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다.")
+    ;
 
     private final HttpStatus httpStatus;
     private final String code;

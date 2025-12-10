@@ -5,6 +5,7 @@ import com.github.gubbib.backend.DTO.Board.BoardDetailDTO;
 import com.github.gubbib.backend.DTO.Post.PostListDTO;
 import com.github.gubbib.backend.Domain.Board.Board;
 import com.github.gubbib.backend.Domain.Post.Post;
+import com.github.gubbib.backend.Exception.Board.BoardNotFoundException;
 import com.github.gubbib.backend.Repository.Board.BoardRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class BoardPostServiceImp implements BoardPostService {
 
     private Board existsBoard(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow();
+                .orElseThrow(BoardNotFoundException::new);
     }
 
     @Override

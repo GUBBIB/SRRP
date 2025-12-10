@@ -32,6 +32,10 @@ public class CustomUserPrincipal implements UserDetails, OAuth2User {
         this.oauth2Attributes = oauth2Attributes;
     }
 
+    public Long getId(){
+        return user.getId();
+    }
+
     @Override
     public String getName() { // Oauth2User
         if(user != null) return user.getName();
