@@ -114,6 +114,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void modifyNickname(CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname) {
         User user = checkUser(userPrincipal);
 
@@ -126,6 +127,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public void modifyPassword(CustomUserPrincipal userPrincipal, ModifyUserPasswordDTO modifyUserPasswordDTO) {
         User user = checkUser(userPrincipal);
 
