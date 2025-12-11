@@ -38,6 +38,7 @@ public enum ErrorCode {
 
     // Board 관련
     BOARD_NOT_FOUND(HttpStatus.NOT_FOUND, "B001", "존재하지 않는 게시판입니다."),
+    BOARD_ALREADY_EXISTS(HttpStatus.CONFLICT, "B002", "이미 존재하는 게시판입니다."),
 
     // Post 관련
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다.")
