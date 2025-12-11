@@ -40,7 +40,7 @@ public class AuthServiceImp implements AuthService {
         String password = passwordEncoder.encode(requestDTO.password());
         String nickname = requestDTO.nickname();
 
-        User result = User.createLocal(email, name, password, nickname);
+        User result = User.createLocal(email, password, name, nickname);
 
         User saved = userRepository.save(result);
 
