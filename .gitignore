@@ -28,3 +28,6 @@ replay_pid*
 build
 *.iml
 application.properties
+application.yml
+
+.postman
