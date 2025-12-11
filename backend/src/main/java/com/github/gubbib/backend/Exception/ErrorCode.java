@@ -16,7 +16,7 @@ public enum ErrorCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "C005", "접근 권한이 없습니다."),
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "C006", "잘못된 요청입니다."),
 
-    // Auth(인증/인가) 관련
+    //  Auth(인증/인가) 관련
     AUTH_EMAIL_DUPLICATION(HttpStatus.CONFLICT, "A001", "이미 가입된 이메일입니다."),
     AUTH_INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "A002", "이메일 또는 비밀번호가 올바르지 않습니다."),
     AUTH_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "A003", "인증이 필요합니다."),
