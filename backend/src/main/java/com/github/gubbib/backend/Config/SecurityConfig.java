@@ -1,5 +1,7 @@
 package com.github.gubbib.backend.Config;
 
+import com.github.gubbib.backend.Exception.JwtAccessDeniedHandler;
+import com.github.gubbib.backend.Exception.JwtAuthenticationEntryPoint;
 import com.github.gubbib.backend.JWT.JwtAuthenticationFilter;
 import com.github.gubbib.backend.JWT.JwtTokenProvider;
 import com.github.gubbib.backend.Repository.User.UserRepository;
@@ -53,8 +55,8 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtAuthenticationFilter jwtAuthenticationFilter,
             CustomOauth2UserService customOauth2UserService,
-            OAuth2SuccessHandler oAuth2SuccessHandler
-    ) throws Exception {
+            OAuth2SuccessHandler oAuth2SuccessHandler,
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, JwtAccessDeniedHandler jwtAccessDeniedHandler) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -82,6 +84,10 @@ public class SecurityConfig {
                                 .userService(customOauth2UserService)
                         )
                         .successHandler(oAuth2SuccessHandler)
+                )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler(jwtAccessDeniedHandler)
                 )
                 .addFilterBefore(jwtAuthenticationFilter, ExceptionTranslationFilter.class)
 //                .addFilterBefore(, JwtAuthenticationFilter.class) jwt exception filter 만들면 추가 예정
