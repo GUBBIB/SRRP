@@ -50,7 +50,7 @@ public class CustomUserPrincipal implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getRoleName()));
     }
 
     @Override

@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,7 @@ public class UserController {
             )
     })
     @GetMapping("/me")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserInfoDTO> me(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -71,6 +73,7 @@ public class UserController {
             )
     })
     @GetMapping("/my/posts")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserMyPostDTO>> myPost(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -98,6 +101,7 @@ public class UserController {
             )
     })
     @GetMapping("/my/comments")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserMyCommentDTO>> myComment(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -129,6 +133,7 @@ public class UserController {
             )
     })
     @GetMapping("/my/like/post")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserMyLikePostDTO>> myLikePost(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -160,6 +165,7 @@ public class UserController {
             )
     })
     @GetMapping("/my/like/comment")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserMyLikeCommentDTO>> myLikeComment(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal
     ) {
@@ -281,6 +287,7 @@ public class UserController {
             )
     })
     @PutMapping("/modify/nickname")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> modifyNickname(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @RequestBody ModifyUserNicknameDTO modifyUserNicknameDTO
@@ -308,6 +315,7 @@ public class UserController {
             )
     })
     @PostMapping("/modify/password")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> modifyPassword(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
             @RequestBody ModifyUserPasswordDTO modifyUserPasswordDTO

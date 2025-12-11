@@ -18,4 +18,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
         FROM Board b
     """)
     List<BoardListDTO> getBoardList();
+
+    boolean existsByName(String name);
 }
