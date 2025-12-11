@@ -52,4 +52,5 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
     List<UserMyLikeCommentDTO> findMyLikeCommentByUserId(Long userId);
 
     Boolean existsByPost_IdAndUser_Id(Long postId, Long userId);
+    Boolean existsByComment_IdAndUser_Id(Long commentId, Long userId);
 }
