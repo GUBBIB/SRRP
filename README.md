@@ -17,6 +17,19 @@
 ### Docker
 - PostgreSQl, Redis 를 Docker로 실행하여 손쉽게 환경을 구성
 
+#### 설치 및 실행 방법
+1. Docker Desktop을 설치한다.
+2. 터미널(cmd 또는 PowerShell)에서 프로젝트 루트의 `SRRP_Docker` 디렉토리로 이동한다.
+3. 아래 명령어를 실행하여 컨테이너를 실행한다.
+
+```bash
+docker compose up -d
+```
+#### 컨테이너 종료
+```bash
+docker compose down
+```
+
 ### Postman
 - REST API 테스트와 요청/응답 검증에 사용
 - JWT 인증 API는 Postman의 Bearer Token 기능을 사용하여 검증
