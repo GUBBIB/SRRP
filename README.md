@@ -13,6 +13,17 @@
 
 ---
 
+## Local 개발 환경
+### Docker
+- PostgreSQl, Redis 를 Docker로 실행하여 손쉽게 환경을 구성
+
+### Postman
+- REST API 테스트와 요청/응답 검증에 사용
+- JWT 인증 API는 Postman의 Bearer Token 기능을 사용하여 검증
+- OAuth2 로그인 테스트 시 토큰 확인 및 API 호출 과정 검증 가능
+
+---
+
 ## 프로젝트 구조
 
 ```
@@ -89,15 +100,6 @@ backend/
     - `/swagger-ui/index.html` 경로에서 API 문서 UI 제공
     - JWT 인증 UI 연동(`bearerAuth`)을 통해 토큰 기반 테스트 지원
 ---
-
-## Local 개발 환경
-### Docker
-- PostgreSQl, Redis 를 Docker로 실행하여 손쉽게 환경을 구성
-
-### Postman
-- REST API 테스트와 요청/응답 검증에 사용
-- JWT 인증 API는 Postman의 Bearer Token 기능을 사용하여 검증
-- OAuth2 로그인 테스트 시 토큰 확인 및 API 호출 과정 검증 가능
 
 # FRONTEND
 
