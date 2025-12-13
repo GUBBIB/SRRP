@@ -5,5 +5,7 @@ public enum LikeType {
     COMMENT("COMMENT");
 
     private String type;
-    LikeType(String type) {}
+    LikeType(String type) {
+        this.type = type;
+    }
 }
