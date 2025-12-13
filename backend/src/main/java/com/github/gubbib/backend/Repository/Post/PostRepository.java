@@ -6,6 +6,7 @@ import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
 import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -81,4 +82,12 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         WHERE b.id = :boardId AND p.id = :postId
     """)
     PostDetailDTO findPostDetail(Long boardId, Long postId);
+
+    @Modifying(flushAutomatically = true, clearAutomatically = true)
+    @Query("""
+        UPDATE Post p 
+        SET p.viewCount = p.viewCount + :delta
+        WHERE p.id = :postId
+    """)
+    int addViewCount(Long postId, Long delta);
 }

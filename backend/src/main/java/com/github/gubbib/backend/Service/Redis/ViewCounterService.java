@@ -10,12 +10,15 @@ public class ViewCounterService {
     private final StringRedisTemplate redisTemplate;
 
     private static final String POST_VIEW_KEY_PREFIX = "view:post:";
+    private static final String VIEW_POST_SET_KEY = "view:set:postIds";
 
     private String getPostViewKey(Long postId){
         return POST_VIEW_KEY_PREFIX + postId;
     }
 
     public long increasePostView(Long postId){
+        redisTemplate.opsForSet().add(VIEW_POST_SET_KEY, postId.toString());
+
         return redisTemplate
                 .opsForValue()
                 .increment(getPostViewKey(postId));

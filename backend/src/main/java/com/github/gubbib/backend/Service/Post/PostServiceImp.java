@@ -6,6 +6,7 @@ import com.github.gubbib.backend.Exception.Post.PostNotFoundException;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
+import com.github.gubbib.backend.Service.Redis.ViewCounterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ public class PostServiceImp implements PostService {
 
     private final PostRepository postRepository;
     private final LikeRepository likeRepository;
+    private final ViewCounterService viewCounterService;
 
 
     private Post existsPost(Long boardId, Long postId) {
@@ -42,6 +44,7 @@ public class PostServiceImp implements PostService {
 
         postDetailDTO.addFlags(isOwner, isLiked);
 
+        if(!isOwner) viewCounterService.increasePostView(postId);
 
         return postDetailDTO;
     }
