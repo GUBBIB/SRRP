@@ -142,3 +142,5 @@ frontend/
 # 수정 필요
 - Oauth2UserInfo.java - ofXXX 메소드 함수 완성 필요
 - OAuth2SuccessHandler - redirect 경로 수정 필요
+- ``Notification`` 도메인 생성 필요
+- [Post, Comment, Notification] 생성 api 추가 필요
