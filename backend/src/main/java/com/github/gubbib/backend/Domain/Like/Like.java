@@ -21,7 +21,7 @@ public class Like extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, length = 255)
     @Enumerated(EnumType.STRING)
     private LikeType type;
 
