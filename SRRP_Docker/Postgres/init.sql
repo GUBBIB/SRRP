@@ -104,8 +104,8 @@ CREATE TABLE IF NOT EXISTS likes (
   CONSTRAINT fk_likes_user FOREIGN KEY (user_id) REFERENCES users(id),
 
   CONSTRAINT ck_like_target CHECK (
-    (post_id IS NOT NULL AND comment_id IS NULL AND type = 'POST') OR
-    (post_id IS NULL AND comment_id IS NOT NULL AND type = 'COMMENT')
+    (post_id IS NOT NULL AND comment_id IS NULL AND type = 'POST'::like_type) OR
+    (post_id IS NULL AND comment_id IS NOT NULL AND type = 'COMMENT'::like_type)
   )
 );
 
