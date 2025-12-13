@@ -27,7 +27,7 @@ docker compose up -d
 ```
 #### 컨테이너 종료
 ```bash
-docker compose down
+docker compose down -v
 ```
 
 ### Postman
