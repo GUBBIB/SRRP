@@ -1,9 +1,8 @@
 package com.github.gubbib.backend.JWT;
 
 import com.github.gubbib.backend.Domain.User.User;
-import com.github.gubbib.backend.Exception.Auth.AuthRefreshTokenInvalidException;
-import com.github.gubbib.backend.Exception.Auth.AuthTokenExpiredException;
-import com.github.gubbib.backend.Exception.Auth.AuthTokenInvalidException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,9 +75,9 @@ public class JwtTokenProvider {
                     .parseClaimsJws(token);
 
         } catch(ExpiredJwtException e){
-            throw new AuthTokenExpiredException();
+            throw new GlobalException(ErrorCode.AUTH_TOKEN_EXPIRED);
         } catch(JwtException | IllegalArgumentException e){
-            throw new AuthTokenInvalidException();
+            throw new GlobalException(ErrorCode.AUTH_TOKEN_INVALID);
         }
     }
 
@@ -90,7 +89,7 @@ public class JwtTokenProvider {
         String type = claims.get("type", String.class);
 
         if(!"refresh".equals(type)){
-            throw new AuthRefreshTokenInvalidException();
+            throw new GlobalException(ErrorCode.AUTH_REFRESH_TOKEN_INVALID);
         }
 
         return jws;

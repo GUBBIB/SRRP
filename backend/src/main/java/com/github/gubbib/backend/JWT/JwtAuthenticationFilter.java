@@ -1,7 +1,8 @@
 package com.github.gubbib.backend.JWT;
 
 import com.github.gubbib.backend.Domain.User.User;
-import com.github.gubbib.backend.Exception.User.UserNotFoundException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import io.jsonwebtoken.Claims;
@@ -41,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Long userId = Long.parseLong(claims.getBody().getSubject());
 
                 User user = userRepository.findById(userId)
-                        .orElseThrow(UserNotFoundException::new);
+                        .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
 
                 CustomUserPrincipal principal = new CustomUserPrincipal(user);
 

@@ -6,7 +6,6 @@ import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Domain.User.UserRole;
-import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.ErrorCode;
 import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.User.UserRepository;
@@ -66,7 +65,7 @@ public class AuthServiceImp implements AuthService {
 
         // 이메일 비번 틀렸을 경우
         User user = userRepository.findByEmailAndRoleNot(requestDTO.email(),  UserRole.SYSTEM)
-                .orElseThrow(AuthInvalidCredentialsException::new);
+                .orElseThrow(() -> new GlobalException(ErrorCode.AUTH_INVALID_CREDENTIALS));
         if(!passwordEncoder.matches(requestDTO.password(), user.getPassword())){
             throw new GlobalException(ErrorCode.AUTH_INVALID_CREDENTIALS);
         }

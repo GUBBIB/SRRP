@@ -5,7 +5,6 @@ import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Domain.User.UserRole;
 import com.github.gubbib.backend.Exception.ErrorCode;
 import com.github.gubbib.backend.Exception.GlobalException;
-import com.github.gubbib.backend.Exception.User.UserNotFoundException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
@@ -32,13 +31,13 @@ public class UserServiceImp implements UserService {
     @Override
     public User checkUser(CustomUserPrincipal userPrincipal) {
         return userRepository.findById(userPrincipal.getUser().getId())
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     public User findUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(() -> new GlobalException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override

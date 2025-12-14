@@ -4,7 +4,8 @@ import com.github.gubbib.backend.DTO.Board.BoardCreateDTO;
 import com.github.gubbib.backend.DTO.Board.BoardDTO;
 import com.github.gubbib.backend.DTO.Board.BoardDetailDTO;
 import com.github.gubbib.backend.Domain.Board.Board;
-import com.github.gubbib.backend.Exception.Board.BoardAlreadyExistsException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.Board.BoardRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class AdminServiceImp implements AdminService {
     public BoardDetailDTO createBoard(CustomUserPrincipal userPrincipal, BoardCreateDTO boardCreateDTO) {
 
         if(boardRepository.existsByName(boardCreateDTO.title())){
-            throw new BoardAlreadyExistsException();
+            throw new GlobalException(ErrorCode.BOARD_ALREADY_EXISTS);
         }
 
         Board board = Board.create(boardCreateDTO.title(), boardCreateDTO.description());

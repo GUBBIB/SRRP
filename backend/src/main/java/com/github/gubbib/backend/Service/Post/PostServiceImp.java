@@ -2,7 +2,8 @@ package com.github.gubbib.backend.Service.Post;
 
 import com.github.gubbib.backend.DTO.Post.PostDetailDTO;
 import com.github.gubbib.backend.Domain.Post.Post;
-import com.github.gubbib.backend.Exception.Post.PostNotFoundException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
@@ -23,7 +24,7 @@ public class PostServiceImp implements PostService {
 
     private Post existsPost(Long boardId, Long postId) {
         return postRepository.findByBoard_IdAndId(boardId, postId)
-                .orElseThrow(PostNotFoundException::new);
+                .orElseThrow(() -> new GlobalException(ErrorCode.POST_NOT_FOUND));
     }
 
     @Override
