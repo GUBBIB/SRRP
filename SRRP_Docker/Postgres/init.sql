@@ -4,7 +4,7 @@ BEGIN;
 DO $$
 BEGIN
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
-    CREATE TYPE user_role AS ENUM ('USER', 'ADMIN', 'MANAGER');
+    CREATE TYPE user_role AS ENUM ('USER', 'ADMIN', 'MANAGER', 'SYSTEM');
   END IF;
 
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'provider_type') THEN
@@ -13,6 +13,10 @@ BEGIN
 
   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'like_type') THEN
     CREATE TYPE like_type AS ENUM ('POST', 'COMMENT');
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'notification_type') THEN
+    CREATE TYPE notification_type AS ENUM ('COMMENT', 'FOLLOW', 'SYSTEM');
   END IF;
 END $$;
 
@@ -32,7 +36,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   deleted_at TIMESTAMP NULL,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- boards
@@ -44,7 +48,7 @@ CREATE TABLE IF NOT EXISTS boards (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   deleted_at TIMESTAMP NULL,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 -- posts
@@ -60,7 +64,7 @@ CREATE TABLE IF NOT EXISTS posts (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   deleted_at TIMESTAMP NULL,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
   CONSTRAINT fk_posts_user FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_posts_board FOREIGN KEY (board_id) REFERENCES boards(id)
@@ -78,7 +82,7 @@ CREATE TABLE IF NOT EXISTS comments (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   deleted_at TIMESTAMP NULL,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
   CONSTRAINT fk_comments_user FOREIGN KEY (user_id) REFERENCES users(id),
   CONSTRAINT fk_comments_post FOREIGN KEY (post_id) REFERENCES posts(id),
@@ -97,7 +101,7 @@ CREATE TABLE IF NOT EXISTS likes (
   created_at TIMESTAMP NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
   deleted_at TIMESTAMP NULL,
-  deleted BOOLEAN NOT NULL DEFAULT FALSE,
+  is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
 
   CONSTRAINT fk_likes_post FOREIGN KEY (post_id) REFERENCES posts(id),
   CONSTRAINT fk_likes_comment FOREIGN KEY (comment_id) REFERENCES comments(id),
@@ -115,6 +119,26 @@ ON likes(post_id, user_id) WHERE post_id IS NOT NULL;
 CREATE UNIQUE INDEX IF NOT EXISTS uq_likes_comment_user
 ON likes(comment_id, user_id) WHERE comment_id IS NOT NULL;
 
+-- Notification
+CREATE TABLE IF NOT EXISTS notifications (
+    id BIGSERIAL PRIMARY KEY,
+
+    message VARCHAR(255) NOT NULL,
+    target_url VARCHAR(255) NOT NULL,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    type notification_type NOT NULL,
+
+    receiver_id BIGINT NOT NULL,
+    sender_id BIGINT NOT NULL,
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    deleted_at TIMESTAMP NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT FALSE,
+
+    CONSTRAINT fk_notifications_receiver FOREIGN KEY (receiver_id) REFERENCES users(id),
+    CONSTRAINT fk_notifications_sender FOREIGN KEY (sender_id) REFERENCES users(id)
+);
 
 TRUNCATE TABLE likes, comments, posts, boards, users
 RESTART IDENTITY CASCADE;
@@ -123,10 +147,10 @@ RESTART IDENTITY CASCADE;
 INSERT INTO users (
   id, email, password, name, nickname, profile_image_url,
   role, provider,
-  created_at, updated_at, deleted_at, deleted
+  created_at, updated_at, deleted_at, is_deleted
 ) VALUES
-(1, 'moon.dragon250@gmail.com', '$2a$10$uhgliDhys84DdBOkIdHnser/PnukZankTcH3EzXOosr21f2hXXaqu', '장문용', '문용이', NULL,
- 'USER', 'LOCAL', NOW(), NOW(), NULL, false),
+    (1, 'system@srrp.com', '$2a$10$uhgliDhys84DdBOkIdHnser/PnukZankTcH3EzXOosr21f2hXXaqu', 'SYSTEM', 'SYSTEM', NULL,
+ 'SYSTEM', 'LOCAL', NOW(), NOW(), NULL, false),
 (2, 'user1@srrp.com', '$2a$10$uhgliDhys84DdBOkIdHnser/PnukZankTcH3EzXOosr21f2hXXaqu', 'test1', 'nickTest1', NULL,
  'USER', 'LOCAL', NOW(), NOW(), NULL, false),
 (3, 'user2@srrp.com', '$2a$10$uhgliDhys84DdBOkIdHnser/PnukZankTcH3EzXOosr21f2hXXaqu', 'test2', 'nickTest2', NULL,
@@ -134,7 +158,7 @@ INSERT INTO users (
 
 INSERT INTO boards (
   id, name, description,
-  created_at, updated_at, deleted_at, deleted
+  created_at, updated_at, deleted_at, is_deleted
 ) VALUES
 (1, '전체', '전체 게시판', NOW(), NOW(), NULL, false),
 (2, '자유', '자유롭게 이야기', NOW(), NOW(), NULL, false),
@@ -143,7 +167,7 @@ INSERT INTO boards (
 INSERT INTO posts (
   id, title, content, view_count,
   user_id, board_id,
-  created_at, updated_at, deleted_at, deleted
+  created_at, updated_at, deleted_at, is_deleted
 ) VALUES
 (1, '첫 글입니다', '안녕하세요. 테스트용 첫 게시글입니다.', 10, 2, 1, NOW(), NOW(), NULL, false),
 (2, '자유게시판 테스트', '자유게시판 글 내용입니다.', 3, 2, 2, NOW(), NOW(), NULL, false),
@@ -152,7 +176,7 @@ INSERT INTO posts (
 INSERT INTO comments (
   id, comment,
   user_id, post_id, parent_id,
-  created_at, updated_at, deleted_at, deleted
+  created_at, updated_at, deleted_at, is_deleted
 ) VALUES
 (1, '첫 댓글!', 3, 1, NULL, NOW(), NOW(), NULL, false),
 (2, '대댓글입니다.', 2, 1, 1, NOW(), NOW(), NULL, false),
@@ -161,7 +185,7 @@ INSERT INTO comments (
 INSERT INTO likes (
   id, type,
   post_id, comment_id, user_id,
-  created_at, updated_at, deleted_at, deleted
+  created_at, updated_at, deleted_at, is_deleted
 ) VALUES
 (1, 'POST', 1, NULL, 3, NOW(), NOW(), NULL, false),
 (2, 'POST', 2, NULL, 3, NOW(), NOW(), NULL, false),
@@ -173,6 +197,7 @@ SELECT setval(pg_get_serial_sequence('boards','id'), (SELECT MAX(id) FROM boards
 SELECT setval(pg_get_serial_sequence('posts','id'), (SELECT MAX(id) FROM posts));
 SELECT setval(pg_get_serial_sequence('comments','id'), (SELECT MAX(id) FROM comments));
 SELECT setval(pg_get_serial_sequence('likes','id'), (SELECT MAX(id) FROM likes));
+SELECT setval(pg_get_serial_sequence('notifications','id'), (SELECT MAX(id) FROM notifications));
 
 
 COMMIT;
