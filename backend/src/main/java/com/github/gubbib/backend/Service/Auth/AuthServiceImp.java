@@ -6,9 +6,9 @@ import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Domain.User.UserRole;
-import com.github.gubbib.backend.Exception.Auth.AuthEmailDuplicationException;
 import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
-import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Service.Security.JwtCookieService;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class AuthServiceImp implements AuthService {
     public AuthResultDTO register(RegisterRequestDTO requestDTO) {
 
         if(userRepository.existsByEmail(requestDTO.email())){
-            throw new AuthEmailDuplicationException();
+            throw new GlobalException(ErrorCode.AUTH_EMAIL_DUPLICATION);
         } else if(userRepository.existsByNicknameAndRoleNot(requestDTO.nickname(),  UserRole.SYSTEM)){
-            throw new UserNicknameDuplicationException();
+            throw new GlobalException(ErrorCode.USER_NICKNAME_DUPLICATION);
         }
 
         String email = requestDTO.email();
@@ -68,7 +68,7 @@ public class AuthServiceImp implements AuthService {
         User user = userRepository.findByEmailAndRoleNot(requestDTO.email(),  UserRole.SYSTEM)
                 .orElseThrow(AuthInvalidCredentialsException::new);
         if(!passwordEncoder.matches(requestDTO.password(), user.getPassword())){
-            throw new AuthInvalidCredentialsException();
+            throw new GlobalException(ErrorCode.AUTH_INVALID_CREDENTIALS);
         }
 
         ResponseCookie accessTokenCookie = jwtCookieService.createAccessToken(user);

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 
@@ -27,4 +28,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
         ORDER BY n.createdAt DESC
     """)
     List<UserMyNotificationDTO> findMyNotification(Long userId);
+
+    Optional<Notification> findByIdAndReceiverIdAndIsDeletedFalse(Long notificationId, Long receiverId);
 }

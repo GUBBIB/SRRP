@@ -1,9 +1,8 @@
 package com.github.gubbib.backend.DTO.Oauth2;
 
-import com.github.gubbib.backend.Exception.Auth.AuthProviderMismatchException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Map;
 
@@ -18,7 +17,7 @@ public record Oauth2UserInfo(
             case "google"   ->   ofGoogle(attributes);
             case "kakao"    ->   ofKakao(attributes);
             case "naver"    ->   ofNaver(attributes);
-            default -> throw new AuthProviderMismatchException();
+            default -> throw new GlobalException(ErrorCode.AUTH_PROVIDER_MISMATCH);
         };
     }
 

@@ -41,7 +41,10 @@ public enum ErrorCode {
     BOARD_ALREADY_EXISTS(HttpStatus.CONFLICT, "B002", "이미 존재하는 게시판입니다."),
 
     // Post 관련
-    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다.")
+    POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다."),
+
+    // Notification 관련
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "존재하지 않는 알림입니다.")
     ;
 
     private final HttpStatus httpStatus;

@@ -3,10 +3,9 @@ package com.github.gubbib.backend.Service.User;
 import com.github.gubbib.backend.DTO.User.*;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Domain.User.UserRole;
-import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Exception.User.UserNotFoundException;
-import com.github.gubbib.backend.Exception.User.UserPasswordNotMatchException;
-import com.github.gubbib.backend.Exception.User.UserSameAsOldPasswordException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
@@ -110,7 +109,7 @@ public class UserServiceImp implements UserService {
     public void checkNickname(CustomUserPrincipal userPrincipal, String nickname) {
 
         if(userRepository.existsByNicknameAndRoleNot(nickname, UserRole.SYSTEM)) {
-            throw new UserNicknameDuplicationException();
+            throw new GlobalException(ErrorCode.USER_NICKNAME_DUPLICATION);
         }
     }
 
@@ -120,7 +119,7 @@ public class UserServiceImp implements UserService {
         User user = checkUser(userPrincipal);
 
         if(userRepository.existsByNicknameAndRoleNot(modifyNickname.modifyNick(),  UserRole.SYSTEM)){
-            throw new UserNicknameDuplicationException();
+            throw new GlobalException(ErrorCode.USER_NICKNAME_DUPLICATION);
         }
 
         user.setNickname(modifyNickname.modifyNick());
@@ -133,11 +132,11 @@ public class UserServiceImp implements UserService {
         User user = checkUser(userPrincipal);
 
         if(!passwordEncoder.matches(modifyUserPasswordDTO.currentPassword(),  user.getPassword())){
-            throw new UserPasswordNotMatchException();
+            throw new GlobalException(ErrorCode.USER_PASSWORD_NOT_MATCH);
         }
 
         if (passwordEncoder.matches(modifyUserPasswordDTO.currentPassword(), modifyUserPasswordDTO.modifyPassword())) {
-            throw new UserSameAsOldPasswordException();
+            throw new GlobalException(ErrorCode.USER_SAME_AS_OLD_PASSWORD);
         }
 
         user.changePassword(passwordEncoder.encode(modifyUserPasswordDTO.modifyPassword()));
