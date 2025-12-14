@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -25,7 +23,7 @@ public class Notification extends BaseEntity {
     private String targetUrl;
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 

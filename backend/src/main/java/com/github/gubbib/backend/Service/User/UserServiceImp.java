@@ -2,6 +2,7 @@ package com.github.gubbib.backend.Service.User;
 
 import com.github.gubbib.backend.DTO.User.*;
 import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Domain.User.UserRole;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
 import com.github.gubbib.backend.Exception.User.UserNotFoundException;
 import com.github.gubbib.backend.Exception.User.UserPasswordNotMatchException;
@@ -108,7 +109,7 @@ public class UserServiceImp implements UserService {
     @Override
     public void checkNickname(CustomUserPrincipal userPrincipal, String nickname) {
 
-        if(userRepository.existsByNickname(nickname)) {
+        if(userRepository.existsByNicknameAndRoleNot(nickname, UserRole.SYSTEM)) {
             throw new UserNicknameDuplicationException();
         }
     }
@@ -118,7 +119,7 @@ public class UserServiceImp implements UserService {
     public void modifyNickname(CustomUserPrincipal userPrincipal, ModifyUserNicknameDTO modifyNickname) {
         User user = checkUser(userPrincipal);
 
-        if(userRepository.existsByNickname(modifyNickname.modifyNick())){
+        if(userRepository.existsByNicknameAndRoleNot(modifyNickname.modifyNick(),  UserRole.SYSTEM)){
             throw new UserNicknameDuplicationException();
         }
 

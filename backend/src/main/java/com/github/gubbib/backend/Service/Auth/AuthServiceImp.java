@@ -5,6 +5,7 @@ import com.github.gubbib.backend.DTO.Auth.AuthResultDTO;
 import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
 import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
 import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Domain.User.UserRole;
 import com.github.gubbib.backend.Exception.Auth.AuthEmailDuplicationException;
 import com.github.gubbib.backend.Exception.Auth.AuthInvalidCredentialsException;
 import com.github.gubbib.backend.Exception.User.UserNicknameDuplicationException;
@@ -31,7 +32,7 @@ public class AuthServiceImp implements AuthService {
 
         if(userRepository.existsByEmail(requestDTO.email())){
             throw new AuthEmailDuplicationException();
-        } else if(userRepository.existsByNickname(requestDTO.nickname())){
+        } else if(userRepository.existsByNicknameAndRoleNot(requestDTO.nickname(),  UserRole.SYSTEM)){
             throw new UserNicknameDuplicationException();
         }
 
@@ -64,7 +65,7 @@ public class AuthServiceImp implements AuthService {
     public AuthResultDTO login(LoginRequestDTO requestDTO) {
 
         // 이메일 비번 틀렸을 경우
-        User user = userRepository.findByEmail(requestDTO.email())
+        User user = userRepository.findByEmailAndRoleNot(requestDTO.email(),  UserRole.SYSTEM)
                 .orElseThrow(AuthInvalidCredentialsException::new);
         if(!passwordEncoder.matches(requestDTO.password(), user.getPassword())){
             throw new AuthInvalidCredentialsException();

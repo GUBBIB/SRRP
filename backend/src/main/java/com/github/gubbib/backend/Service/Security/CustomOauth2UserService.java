@@ -2,7 +2,7 @@ package com.github.gubbib.backend.Service.Security;
 
 import com.github.gubbib.backend.DTO.Oauth2.Oauth2UserInfo;
 import com.github.gubbib.backend.Domain.User.User;
-import com.github.gubbib.backend.Exception.User.UserNotFoundException;
+import com.github.gubbib.backend.Domain.User.UserRole;
 import com.github.gubbib.backend.Repository.User.UserRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +40,7 @@ public class CustomOauth2UserService extends DefaultOAuth2UserService {
         String provider = oauth2UserInfo.provider();
         log.info("✅ [OAuth2] provider={}, email={}, name={}", userRequest.getClientRegistration().getRegistrationId(), email, name);
 
-        User user = userRepository.findByEmail(email).orElse(null);
+        User user = userRepository.findByEmailAndRoleNot(email,  UserRole.SYSTEM).orElse(null);
 
         boolean isNewUser = false;
 

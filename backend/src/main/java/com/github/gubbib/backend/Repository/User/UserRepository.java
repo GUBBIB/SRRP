@@ -1,17 +1,16 @@
 package com.github.gubbib.backend.Repository.User;
 
-import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
 import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Domain.User.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    Optional<User> findByEmail(String email);
-    Optional<User> findByName(String name);
-    Optional<User> findByNickname(String nickname);
+    Optional<User> findByEmailAndRoleNot(String email, UserRole role);
+    Optional<User> findByNameAndRoleNot(String name, UserRole role);
+    Optional<User> findByNicknameAndRoleNot(String nickname, UserRole role);
     boolean existsByEmail(String email);
-    boolean existsByNickname(String nickname);
+    boolean existsByNicknameAndRoleNot(String nickname,  UserRole role);
 }
