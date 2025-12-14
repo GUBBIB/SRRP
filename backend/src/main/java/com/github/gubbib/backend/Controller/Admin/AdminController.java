@@ -20,7 +20,7 @@ import java.net.URI;
 @RestController
 @RequiredArgsConstructor(onConstructor_ =  @Autowired)
 @RequestMapping("/api/v1/admin/util")
-@Tag(name = "Admin", description = "관리자 전용 API")
+@Tag(name = "관리자", description = "관리자 전용 API")
 public class AdminController {
 
     private final AdminService adminService;

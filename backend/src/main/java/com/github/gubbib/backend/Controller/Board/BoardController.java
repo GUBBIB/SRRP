@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RequestMapping("/api/v1/boards")
-@Tag(name = "Board", description = "게시판 관련 API")
+@Tag(name = "게시판", description = "게시판 관련 API")
 public class BoardController {
 
     private final BoardService boardService;

@@ -2,7 +2,6 @@ package com.github.gubbib.backend.Controller.Comment;
 
 import com.github.gubbib.backend.DTO.Comment.CommentResponseDTO;
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
-import com.github.gubbib.backend.Domain.Comment.Comment;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.Comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,12 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
-@Tag(name = "Comment", description = "댓글 관련 API")
+@Tag(name = "댓글", description = "댓글 관련 API")
 public class CommentController {
 
     private final CommentService commentService;

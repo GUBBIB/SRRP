@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 @RequestMapping("/api/v1/users")
-@Tag(name = "User", description = "유저 관련 API")
+@Tag(name = "유저", description = "유저 관련 API")
 @SecurityRequirement(name = "bearerAuth")
 public class UserController {
 
