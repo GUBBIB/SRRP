@@ -51,6 +51,7 @@ backend/
      │   │       ├─ Domain/       # 엔티티 / 도메인 모델 (@Entity 등)
      │   │       ├─ Dto/          # 요청 / 응답 DTO
      │   │       ├─ Exception/    # 전역 및 도메인별 예외 관리 폴더
+     │   │       ├─ Handler/      # 각종 Handler 
      │   │       ├─ JWT/          # JWT 기반 인증/인가 구현 (토큰 생성, 검증, 필터 등)
      │   │       ├─ Repository/   # JPA Repository 인터페이스
      │   │       ├─ Security/     # 공통 보안 설정 및 기본 시큐리티 로직 
