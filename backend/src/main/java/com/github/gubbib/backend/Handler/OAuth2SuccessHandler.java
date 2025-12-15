@@ -1,5 +1,6 @@
-package com.github.gubbib.backend.Security;
+package com.github.gubbib.backend.Handler;
 
+import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

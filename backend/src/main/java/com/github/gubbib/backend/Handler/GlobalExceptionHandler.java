@@ -1,6 +1,9 @@
-package com.github.gubbib.backend.Exception;
+package com.github.gubbib.backend.Handler;
 
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
+import com.github.gubbib.backend.Exception.AccessDeniedException;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

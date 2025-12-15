@@ -1,7 +1,8 @@
-package com.github.gubbib.backend.Exception;
+package com.github.gubbib.backend.Handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
+import com.github.gubbib.backend.Exception.ErrorCode;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
