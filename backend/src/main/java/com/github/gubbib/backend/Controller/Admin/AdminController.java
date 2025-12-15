@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Controller.Admin;
 
+import com.github.gubbib.backend.DTO.Admin.SystemNotificationEventRequestDTO;
 import com.github.gubbib.backend.DTO.Board.BoardCreateDTO;
 import com.github.gubbib.backend.DTO.Board.BoardDetailDTO;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
@@ -38,4 +39,14 @@ public class AdminController {
                 .body(boardDetailDTO);
     }
 
+    @PostMapping("/system/notice")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Void> sendNotice(
+            @RequestBody SystemNotificationEventRequestDTO systemNotificationEventRequestDTO,
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal
+    ){
+        adminService.sendNoticeAllUser(systemNotificationEventRequestDTO, userPrincipal);
+
+        return  ResponseEntity.ok().build();
+    }
 }

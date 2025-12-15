@@ -75,4 +75,24 @@ public class NotificationController {
                 .build();
     }
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "삭제 성공"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "알림 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class))
+            )
+    })
+    @DeleteMapping("/{notificationId}/delete")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> delete(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @PathVariable Long notificationId
+    ){
+        notificationService.notificationDelete(userPrincipal, notificationId);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
 }

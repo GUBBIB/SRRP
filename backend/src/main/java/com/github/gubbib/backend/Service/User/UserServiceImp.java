@@ -41,6 +41,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
+    public List<User> findAllByRoleNot(UserRole role) {
+        List<User> users = userRepository.findAllByRoleNot(role);
+
+        return users;
+    }
+
+    @Override
     public UserInfoDTO me(CustomUserPrincipal customUserPrincipal) {
         User user = checkUser(customUserPrincipal);
 

@@ -1,4 +1,4 @@
-package com.github.gubbib.backend.Repository.NotificationRepository;
+package com.github.gubbib.backend.Repository.Notification;
 
 import com.github.gubbib.backend.DTO.Notification.UserMyNotificationDTO;
 import com.github.gubbib.backend.Domain.Notification.Notification;

@@ -22,6 +22,10 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt =  LocalDateTime.now();
     @Column(name = "deleted_at", nullable = true)
     private LocalDateTime deletedAt;
-    @Column(name = "isDeleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
+
+    public void changeIsDeleted(boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 }

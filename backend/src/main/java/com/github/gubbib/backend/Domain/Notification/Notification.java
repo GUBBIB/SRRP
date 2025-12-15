@@ -38,4 +38,18 @@ public class Notification extends BaseEntity {
     public void changeIsRead(boolean isRead) {
         this.isRead = isRead;
     }
+
+    public static Notification create(User receiver, User sender, NotificationType type, String message, String targetUrl) {
+        Notification n = new Notification();
+
+        n.receiver = receiver;
+        n.sender = sender;
+        n.type = type;
+        n.message = message;
+        n.targetUrl = targetUrl;
+        n.isRead = false;
+
+        return n;
+    }
+
 }
