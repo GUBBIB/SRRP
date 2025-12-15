@@ -57,9 +57,9 @@ backend/
      │   │       ├─ Service/      # 서비스 계층 — 비즈니스 로직
      │   │       └─ BackendApplication.java   # @SpringBootApplication (메인 클래스)
      │   └─ resources/
-     │       ├─ application.properties (또는 application.yml)  # 환경 설정
-     │       ├─ static/      # 안 씀
-     │       └─ templates/   # 안 씀
+     │       ├─ application.yml   # 환경 설정
+     │       ├─ static/           # 안 씀
+     │       └─ templates/        # 안 씀
      └─ test/
          └─ java/
              └─ com.github.gubbib
