@@ -1,13 +1,20 @@
 package com.github.gubbib.backend.Service.Comment;
 
+import com.github.gubbib.backend.DTO.Comment.CommentCreateRequestDTO;
+import com.github.gubbib.backend.DTO.Comment.CommentCreateResponseDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentListDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentResponseDTO;
+import com.github.gubbib.backend.Domain.Comment.Comment;
 import com.github.gubbib.backend.Domain.Post.Post;
+import com.github.gubbib.backend.Domain.User.User;
+import com.github.gubbib.backend.Exception.ErrorCode;
+import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.BoardPost.BoardPostService;
 import com.github.gubbib.backend.Service.Like.LikeServiceImp;
+import com.github.gubbib.backend.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +30,13 @@ public class CommentServiceImp implements CommentService {
     private final CommentRepository commentRepository;
     private final LikeServiceImp likeService;
     private final BoardPostService boardPostService;
+    private final UserService userService;
+
+    @Override
+    public Comment existParentComment(Long parentId) {
+        return commentRepository.findById(parentId)
+                .orElseThrow(() -> new GlobalException(ErrorCode.COMMENT_NOT_FOUND));
+    }
 
     @Override
     public CommentResponseDTO getPostComments(CustomUserPrincipal userPrincipal, Long boardId, Long postId) {
@@ -49,6 +63,33 @@ public class CommentServiceImp implements CommentService {
                 .postId(p.getId())
                 .comments(commentList)
                 .build();
+
+        return response;
+    }
+
+    @Override
+    public CommentCreateResponseDTO createComment(CustomUserPrincipal userPrincipal, CommentCreateRequestDTO dto) {
+        User user = userService.checkUser(userPrincipal);
+        Post p = boardPostService.existPost(dto.boardId(), dto.postId());
+        Comment parent;
+        if(dto.parentId() != null){
+            parent = existParentComment(dto.parentId());
+        } else {
+            parent = null;
+        }
+
+        Comment c = Comment.create(
+                dto.comment(),
+                user,
+                p,
+                parent
+        );
+
+        CommentCreateResponseDTO response =
+                CommentCreateResponseDTO.builder()
+                        .boardId(dto.boardId())
+                        .postId(dto.postId())
+                        .build();
 
         return response;
     }

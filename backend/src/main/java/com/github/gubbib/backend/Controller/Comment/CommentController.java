@@ -1,5 +1,7 @@
 package com.github.gubbib.backend.Controller.Comment;
 
+import com.github.gubbib.backend.DTO.Comment.CommentCreateRequestDTO;
+import com.github.gubbib.backend.DTO.Comment.CommentCreateResponseDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentResponseDTO;
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
@@ -12,12 +14,11 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/comments")
@@ -58,6 +59,19 @@ public class CommentController {
         CommentResponseDTO response =  commentService.getPostComments(userPrincipal, boardId, postId);
 
         return ResponseEntity.ok()
+                .body(response);
+    }
+
+    @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<CommentCreateResponseDTO> createComment(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody CommentCreateRequestDTO commentCreateRequestDTO
+    ){
+        CommentCreateResponseDTO response = commentService.createComment(userPrincipal, commentCreateRequestDTO);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(response);
     }
 }

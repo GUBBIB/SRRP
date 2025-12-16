@@ -43,6 +43,9 @@ public enum ErrorCode {
     // Post 관련
     POST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "존재하지 않는 게시글입니다."),
 
+    // Comment 관련
+    COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "CM001", "존재하지 않는 댓글입니다"),
+
     // Notification 관련
     NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "존재하지 않는 알림입니다.")
     ;
