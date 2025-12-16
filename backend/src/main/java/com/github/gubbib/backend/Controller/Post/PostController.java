@@ -1,6 +1,8 @@
 package com.github.gubbib.backend.Controller.Post;
 
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
+import com.github.gubbib.backend.DTO.Post.PostCreateRequestDTO;
+import com.github.gubbib.backend.DTO.Post.PostCreateResponseDTO;
 import com.github.gubbib.backend.DTO.Post.PostDetailDTO;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.Post.PostService;
@@ -13,12 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -64,4 +67,18 @@ public class PostController {
         return  ResponseEntity.ok()
                 .body(postdetailDTO);
     }
+
+    @PostMapping("/create")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostCreateResponseDTO> createPost(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody PostCreateRequestDTO postCreateRequestDTO
+    ){
+        PostCreateResponseDTO response = postService.createPost(userPrincipal, postCreateRequestDTO);
+
+        // URI.create 로 할시 조회 경로 수정 필요
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(response);
+    }
+
 }

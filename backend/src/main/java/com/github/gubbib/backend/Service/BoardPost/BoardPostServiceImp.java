@@ -23,7 +23,8 @@ public class BoardPostServiceImp implements BoardPostService {
     private final PostRepository postRepository;
     private final BoardRepository boardRepository;
 
-    private Board existsBoard(Long boardId) {
+    @Override
+    public Board existsBoard(Long boardId) {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.BOARD_NOT_FOUND));
     }
