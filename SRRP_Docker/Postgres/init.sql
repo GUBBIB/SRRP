@@ -162,7 +162,8 @@ INSERT INTO boards (
 ) VALUES
 (1, '전체', '전체 게시판', NOW(), NOW(), NULL, false),
 (2, '자유', '자유롭게 이야기', NOW(), NOW(), NULL, false),
-(3, '공지', '운영 공지', NOW(), NOW(), NULL, false);
+(3, '공지', '운영 공지', NOW(), NOW(), NULL, false),
+(4, '건의사항', '건의 사항 게시판', NOW(), NOW(), NULL, false);
 
 INSERT INTO posts (
   id, title, content, view_count,
