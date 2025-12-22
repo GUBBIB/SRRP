@@ -2,21 +2,21 @@ version: "3.9"
 
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: SRRP_PostgreSQL
     ports:
       - "5433:5432"
     environment:
       POSTGRES_DB: srrp
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: srrp!!
+      POSTGRES_PASSWORD: "srrp!!"
     volumes:
-      - postgres_data:/var/lib/postgresql/18/docker
+      - postgres_data:/var/lib/postgresql/data
       - ./Postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
   redis:
-    image: redis:latest
+    image: redis:7
     container_name: SRRP_Redis
     ports:
       - "6379:6379"
