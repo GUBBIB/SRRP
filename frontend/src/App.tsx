@@ -4,14 +4,12 @@ import Header from './Component/Header/Header';
 import Home from './Component/Home/Home';
 import Footer from './Component/Footer/Footer';
 
-export default function App() {
+function App() {
   return (
-    <div id="App">
-      <div className="app-container">
-        <Header />
-        <Home />
-        <Footer />
-      </div>
+    <div className="p-10 text-3xl font-bold text-blue-600">
+	Tailwind 정상 적용
     </div>
   );
 }
+
+export default App;
