@@ -1,8 +1,8 @@
 import React from 'react';
-import "./Home.css";
-import LoginButton from "../Auth/LoginButton";
+import "./HomePage.css";
+import LoginButton from "../../components/auth/LoginButton";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <div id="Home">
       <div className="home-container">
