@@ -1,12 +1,9 @@
-import React from 'react';
-import "./Footer.css";
-
 export default function Footer() {
   return (
-    <div id="Footer">
-      <div className="footer-container">
-        <span className="footer-text">© 2025 My Vite React App</span>
+    <footer style={{ borderTop: "1px solid #ddd", padding: "12px 16px" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", opacity: 0.7 }}>
+        © {new Date().getFullYear()} SRRP
       </div>
-    </div>
+    </footer>
   );
 }

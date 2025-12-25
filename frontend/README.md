@@ -47,54 +47,7 @@ chore: ...
 
 ---
 
-## 🧰 기술 스택 (Tech Stack)
-- **React + TypeScript**
-- **Vite**
-- **Tailwind CSS**
-- (선택) React Router
-- (선택) 상태관리: Zustand / Redux Toolkit / TanStack Query
 
-> Node 버전: **>= 20** 권장
-
----
-
-## 📁 프로젝트 구조 (예시)
-> 리팩토링 이후 구조 기준 (팀 합의에 따라 변경 가능)
-```
-frontend/
-src/
-app/
-App.tsx
-main.tsx
-routes.tsx
-pages/
-home/
-HomePage.tsx
-board/
-BoardListPage.tsx
-BoardDetailPage.tsx
-BoardWritePage.tsx
-BoardEditPage.tsx
-auth/
-LoginPage.tsx
-components/
-layout/
-Header.tsx
-Footer.tsx
-Layout.tsx
-auth/
-LoginButton.tsx
-ui/
-Button.tsx
-api/
-client.ts
-auth.ts
-board.ts
-styles/
-globals.css
-```
-
----
 
 ## 🔐 환경 변수 (Environment Variables)
 
