@@ -1,6 +1,7 @@
 package com.github.gubbib.backend.Service.User;
 
 import com.github.gubbib.backend.DTO.User.*;
+import com.github.gubbib.backend.Domain.Like.LikeType;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Domain.User.UserRole;
 import com.github.gubbib.backend.Exception.ErrorCode;
@@ -83,7 +84,7 @@ public class UserServiceImp implements UserService {
     public List<UserMyLikePostDTO> myLikePostList(CustomUserPrincipal userPrincipal) {
         User user = checkUser(userPrincipal);
 
-        List<UserMyLikePostDTO> getMyLikePosts = likeRepository.findMyLikePostByUserId(user.getId());
+        List<UserMyLikePostDTO> getMyLikePosts = likeRepository.findMyLikePostByUserId(user.getId(), LikeType.POST);
         return getMyLikePosts;
     }
 
@@ -91,7 +92,7 @@ public class UserServiceImp implements UserService {
     public List<UserMyLikeCommentDTO> myLikeCommentList(CustomUserPrincipal userPrincipal) {
         User user = checkUser(userPrincipal);
 
-        List<UserMyLikeCommentDTO> getMyLikeComments = likeRepository.findMyLikeCommentByUserId(user.getId());
+        List<UserMyLikeCommentDTO> getMyLikeComments = likeRepository.findMyLikeCommentByUserId(user.getId(), LikeType.COMMENT);
         return getMyLikeComments;
     }
 

@@ -4,6 +4,7 @@ import com.github.gubbib.backend.DTO.Post.PostCreateRequestDTO;
 import com.github.gubbib.backend.DTO.Post.PostCreateResponseDTO;
 import com.github.gubbib.backend.DTO.Post.PostDetailDTO;
 import com.github.gubbib.backend.Domain.Board.Board;
+import com.github.gubbib.backend.Domain.Like.LikeType;
 import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Exception.ErrorCode;
@@ -11,7 +12,6 @@ import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Repository.Post.PostRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
-import com.github.gubbib.backend.Service.Board.BoardService;
 import com.github.gubbib.backend.Service.BoardPost.BoardPostService;
 import com.github.gubbib.backend.Service.Redis.ViewCounterService;
 import com.github.gubbib.backend.Service.User.UserService;
@@ -40,7 +40,7 @@ public class PostServiceImp implements PostService {
     public PostDetailDTO getPostDetail(CustomUserPrincipal userPrincipal, Long boardId, Long postId) {
         Post  post = existsPost(boardId, postId);
 
-        PostDetailDTO postDetailDTO = postRepository.findPostDetail(boardId, postId);
+        PostDetailDTO postDetailDTO = postRepository.findPostDetail(boardId, postId, LikeType.POST);
 
         Long currentUserId = (userPrincipal != null) ? userPrincipal.getId() : null;
 

@@ -1,9 +1,9 @@
 package com.github.gubbib.backend.Repository.Like;
 
-import com.github.gubbib.backend.DTO.User.UserMyCommentDTO;
 import com.github.gubbib.backend.DTO.User.UserMyLikeCommentDTO;
 import com.github.gubbib.backend.DTO.User.UserMyLikePostDTO;
 import com.github.gubbib.backend.Domain.Like.Like;
+import com.github.gubbib.backend.Domain.Like.LikeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -26,10 +26,10 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
         JOIN l.post p
         JOIN p.board b
         JOIN p.user u
-        WHERE l.user.id = :userId AND l.type = com.github.gubbib.backend.Domain.Like.LikeType.POST
+        WHERE l.user.id = :userId AND l.type = :type
         ORDER BY p.createdAt DESC
     """)
-    List<UserMyLikePostDTO> findMyLikePostByUserId(Long userId);
+    List<UserMyLikePostDTO> findMyLikePostByUserId(Long userId, LikeType type);
 
     @Query("""
         SELECT new com.github.gubbib.backend.DTO.User.UserMyLikeCommentDTO(
@@ -46,10 +46,10 @@ public interface LikeRepository extends JpaRepository<Like,Long> {
         JOIN c.post p
         JOIN p.board b
         JOIN c.user u
-        WHERE l.user.id = :userId AND l.type = com.github.gubbib.backend.Domain.Like.LikeType.COMMENT
+        WHERE l.user.id = :userId AND l.type = :type
         ORDER BY c.createdAt DESC
     """)
-    List<UserMyLikeCommentDTO> findMyLikeCommentByUserId(Long userId);
+    List<UserMyLikeCommentDTO> findMyLikeCommentByUserId(Long userId, LikeType type);
 
     Boolean existsByPost_IdAndUser_Id(Long postId, Long userId);
     Boolean existsByComment_IdAndUser_Id(Long commentId, Long userId);

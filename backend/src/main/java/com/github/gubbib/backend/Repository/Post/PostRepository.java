@@ -3,8 +3,8 @@ package com.github.gubbib.backend.Repository.Post;
 import com.github.gubbib.backend.DTO.Post.PostDetailDTO;
 import com.github.gubbib.backend.DTO.Post.PostListDTO;
 import com.github.gubbib.backend.DTO.User.UserMyPostDTO;
+import com.github.gubbib.backend.Domain.Like.LikeType;
 import com.github.gubbib.backend.Domain.Post.Post;
-import com.github.gubbib.backend.Domain.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -69,7 +69,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 ( 
                     SELECT CAST(COUNT(*) AS LONG) 
                     FROM Like l 
-                    WHERE l.type = com.github.gubbib.backend.Domain.Like.LikeType.POST 
+                    WHERE l.type = :type
                         AND  l.post.id = p.id
                 ),
                 null,
@@ -81,7 +81,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         JOIN p.user u
         WHERE b.id = :boardId AND p.id = :postId
     """)
-    PostDetailDTO findPostDetail(Long boardId, Long postId);
+    PostDetailDTO findPostDetail(Long boardId, Long postId, LikeType type);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query("""
