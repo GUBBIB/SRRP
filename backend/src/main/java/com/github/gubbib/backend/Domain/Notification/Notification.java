@@ -25,7 +25,7 @@ public class Notification extends BaseEntity {
     private String targetUrl;
     @Column(name = "is_read", nullable = false)
     private boolean isRead = false;
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false, columnDefinition = "notification_type")
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private NotificationType type;
 

@@ -25,7 +25,7 @@ public class Like extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "type", nullable = false, length = 255)
+    @Column(name = "type", nullable = false, length = 255, columnDefinition = "like_type")
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private LikeType type;
 

@@ -36,11 +36,11 @@ public class User extends BaseEntity {
 
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name="role", nullable = false,  length = 255)
+    @Column(name="role", nullable = false,  length = 255, columnDefinition = "user_role")
     private UserRole role = UserRole.USER;
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
-    @Column(name = "provider", nullable = false, length = 255)
+    @Column(name = "provider", nullable = false, length = 255, columnDefinition = "provider_type")
     private Provider provider = Provider.LOCAL;
 
     public static User createLocal(String email, String password, String name, String nickname){
