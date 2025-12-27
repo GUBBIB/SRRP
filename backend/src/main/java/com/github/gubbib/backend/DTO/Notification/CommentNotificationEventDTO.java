@@ -7,6 +7,7 @@ import lombok.Builder;
 public record CommentNotificationEventDTO (
         User receiver,
         User sender,
+        Long boardId,
         Long postId
 ){
 

@@ -26,7 +26,7 @@ public class NotificationServiceImp implements NotificationService {
 
     @Override
     public void create(User receiver, User sender, NotificationType type, String message, String targetUrl) {
-        Notification notification = Notification.create(sender, receiver, type, message, targetUrl);
+        Notification notification = Notification.create(receiver, sender, type, message, targetUrl);
 
         notificationRepository.save(notification);
     }

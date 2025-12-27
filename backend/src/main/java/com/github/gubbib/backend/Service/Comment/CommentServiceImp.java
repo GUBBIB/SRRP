@@ -4,19 +4,20 @@ import com.github.gubbib.backend.DTO.Comment.CommentCreateRequestDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentCreateResponseDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentListDTO;
 import com.github.gubbib.backend.DTO.Comment.CommentResponseDTO;
+import com.github.gubbib.backend.DTO.Notification.CommentNotificationEventDTO;
 import com.github.gubbib.backend.Domain.Comment.Comment;
 import com.github.gubbib.backend.Domain.Post.Post;
 import com.github.gubbib.backend.Domain.User.User;
 import com.github.gubbib.backend.Exception.ErrorCode;
 import com.github.gubbib.backend.Exception.GlobalException;
 import com.github.gubbib.backend.Repository.Comment.CommentRepository;
-import com.github.gubbib.backend.Repository.Like.LikeRepository;
 import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.BoardPost.BoardPostService;
 import com.github.gubbib.backend.Service.Like.LikeServiceImp;
 import com.github.gubbib.backend.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class CommentServiceImp implements CommentService {
     private final LikeServiceImp likeService;
     private final BoardPostService boardPostService;
     private final UserService userService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     public Comment existParentComment(Long parentId) {
@@ -68,6 +70,7 @@ public class CommentServiceImp implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentCreateResponseDTO createComment(CustomUserPrincipal userPrincipal, CommentCreateRequestDTO dto) {
         User user = userService.checkUser(userPrincipal);
         Post p = boardPostService.existPost(dto.boardId(), dto.postId());
@@ -84,6 +87,19 @@ public class CommentServiceImp implements CommentService {
                 p,
                 parent
         );
+
+        commentRepository.save(c);
+
+        if(!p.getUser().getId().equals(user.getId())) {
+            eventPublisher.publishEvent(
+                    CommentNotificationEventDTO.builder()
+                            .receiver(p.getUser())
+                            .sender(user)
+                            .boardId(p.getBoard().getId())
+                            .postId(p.getId())
+                            .build()
+            );
+        }
 
         CommentCreateResponseDTO response =
                 CommentCreateResponseDTO.builder()
