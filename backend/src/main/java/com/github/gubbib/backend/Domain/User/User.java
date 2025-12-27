@@ -2,7 +2,12 @@ package com.github.gubbib.backend.Domain.User;
 
 import com.github.gubbib.backend.Domain.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.UUID;
 
@@ -30,11 +35,11 @@ public class User extends BaseEntity {
     private String profile_image_url;
 
 
-    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name="role", nullable = false,  length = 255)
     private UserRole role = UserRole.USER;
 
-    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "provider", nullable = false, length = 255)
     private Provider provider = Provider.LOCAL;
 
