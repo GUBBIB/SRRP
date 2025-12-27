@@ -29,5 +29,7 @@ build
 *.iml
 application.properties
 application.yml
+application-test.yml
+*.yml
 
 .postman
