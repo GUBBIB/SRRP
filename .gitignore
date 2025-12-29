@@ -33,3 +33,7 @@ application-test.yml
 *.yml
 
 .postman
+
+# 민감 정보 포함 파일
+backend/src/main/resources/application.yml
+backend/src/test/resources/application-test.yml
