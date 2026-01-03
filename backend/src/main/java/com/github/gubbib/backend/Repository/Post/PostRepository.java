@@ -31,6 +31,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         JOIN p.board b
         LEFT JOIN Comment c ON c.post = p
         WHERE u.id = :userId
+        AND p.isDeleted = false
         GROUP BY p.id, b.name, u
     """)
     List<UserMyPostDTO> findMyPostByUserId(Long userId);
@@ -49,11 +50,14 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         JOIN p.board b
         JOIN p.user u
         WHERE b.id = :boardId
+        AND p.isDeleted = false
         ORDER BY p.createdAt DESC
     """)
     List<PostListDTO> findAllByBoardId(Long boardId);
 
-    Optional<Post> findByBoard_IdAndId(Long boardId, Long postId);
+    // Optional<Post> findByBoard_IdAndId(Long boardId, Long postId);
+    // 아래 코드로 변경
+    Optional<Post> findByBoard_IdAndIdAndIsDeletedFalse(Long boardId, Long postId);
 
     @Query("""
         SELECT new com.github.gubbib.backend.DTO.Post.PostDetailDTO(
@@ -80,6 +84,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         JOIN p.board b
         JOIN p.user u
         WHERE b.id = :boardId AND p.id = :postId
+        AND p.isDeleted = false
     """)
     PostDetailDTO findPostDetail(Long boardId, Long postId, LikeType type);
 
@@ -88,6 +93,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
         UPDATE Post p 
         SET p.viewCount = p.viewCount + :delta
         WHERE p.id = :postId
+        AND p.isDeleted = false
     """)
     int addViewCount(Long postId, Long delta);
+
 }

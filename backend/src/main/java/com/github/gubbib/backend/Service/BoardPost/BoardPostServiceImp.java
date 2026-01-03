@@ -32,7 +32,7 @@ public class BoardPostServiceImp implements BoardPostService {
 
     @Override
     public Post existPost(Long boardId, Long postId) {
-        return postRepository.findByBoard_IdAndId(boardId, postId)
+        return postRepository.findByBoard_IdAndIdAndIsDeletedFalse(boardId, postId)
                 .orElseThrow(() -> new GlobalException(ErrorCode.POST_NOT_FOUND));
     }
 
