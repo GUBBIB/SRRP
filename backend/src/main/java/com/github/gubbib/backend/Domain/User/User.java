@@ -33,6 +33,8 @@ public class User extends BaseEntity {
 
     @Column(name = "profile_image_url", length = 255)
     private String profile_image_url;
+    @Column(name = "is_students", nullable = true)
+    private boolean isStudents;
 
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
@@ -51,6 +53,7 @@ public class User extends BaseEntity {
         u.name = name;
         u.nickname = nickname;
         u.provider = Provider.LOCAL;
+        u.isStudents = false;
 
         return u;
     }
@@ -63,6 +66,7 @@ public class User extends BaseEntity {
         u.name = name;
         u.nickname = nickname;
         u.provider = provider;
+        u.isStudents = false;
 
         return u;
     }
@@ -70,5 +74,8 @@ public class User extends BaseEntity {
     public void changePassword(String password){
         this.password = password;
     }
-
+    public void verifyStudent(){
+        this.isStudents = true;
+        this.isStudents = true;
+    }
 }

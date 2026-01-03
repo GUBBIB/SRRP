@@ -1,10 +1,8 @@
 package com.github.gubbib.backend.Controller.Auth;
 
-import com.github.gubbib.backend.DTO.Auth.AuthResponseDTO;
-import com.github.gubbib.backend.DTO.Auth.AuthResultDTO;
-import com.github.gubbib.backend.DTO.Auth.LoginRequestDTO;
-import com.github.gubbib.backend.DTO.Auth.RegisterRequestDTO;
+import com.github.gubbib.backend.DTO.Auth.*;
 import com.github.gubbib.backend.DTO.Error.ErrorResponseDTO;
+import com.github.gubbib.backend.Security.CustomUserPrincipal;
 import com.github.gubbib.backend.Service.Auth.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +49,7 @@ public class AuthController {
             )
     })
     @PostMapping("/register")
-    public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO requestDTO){
+    public ResponseEntity<AuthResponseDTO> register(@RequestBody RegisterRequestDTO requestDTO) {
 
         AuthResultDTO response = authService.register(requestDTO);
         AuthResponseDTO authResponseDTO = response.authResponseDTO();
@@ -75,7 +75,7 @@ public class AuthController {
             )
     })
     @PostMapping("/login")
-    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO requestDTO){
+    public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginRequestDTO requestDTO) {
 
         AuthResultDTO response = authService.login(requestDTO);
         AuthResponseDTO authResponseDTO = response.authResponseDTO();
@@ -88,10 +88,10 @@ public class AuthController {
 
     @Operation(summary = "로그아웃", description = "현재 유저를 로그아웃한다. (쿠키 초기화)")
     @ApiResponses({
-            @ApiResponse(responseCode = "200",  description = "로그아웃 성공")
+            @ApiResponse(responseCode = "200", description = "로그아웃 성공")
     })
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(){
+    public ResponseEntity<Void> logout() {
         AuthResultDTO response = authService.logout();
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, response.accessCookie().toString())
@@ -99,4 +99,27 @@ public class AuthController {
                 .build();
     }
 
+    @PostMapping("/student/verify-request")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> requestStudentVerification(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody StudentVerifyRequestDTO studentVerifyRequestDTO
+    ) {
+        authService.sendVerificationMail(userPrincipal, studentVerifyRequestDTO);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
+    @PostMapping("/student/verify")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> verificationCode(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @RequestBody VerificationCodeDTO verificationCodeDTO
+    ){
+        authService.verifyStudent(userPrincipal, verificationCodeDTO);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
 }
