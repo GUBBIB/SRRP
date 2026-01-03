@@ -23,6 +23,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+import com.github.gubbib.backend.DTO.Post.PostDeleteResponseDTO;
+import com.github.gubbib.backend.DTO.Post.PostListDTO;
+import com.github.gubbib.backend.DTO.Post.PostUpdateRequestDTO;
+import com.github.gubbib.backend.DTO.Post.PostUpdateResponseDTO;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/posts")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -81,4 +88,31 @@ public class PostController {
                 .body(response);
     }
 
+    @GetMapping("/{boardId}")
+    public ResponseEntity<List<PostListDTO>> getPostList(
+            @Parameter(description = "게시판 ID") @PathVariable Long boardId
+    ){
+        return ResponseEntity.ok(postService.getPostList(boardId));
+    }
+
+    @PutMapping("/{boardId}/{postId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostUpdateResponseDTO> updatePost(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(description = "게시판 ID") @PathVariable Long boardId,
+            @Parameter(description = "게시글 ID") @PathVariable Long postId,
+            @RequestBody PostUpdateRequestDTO dto
+    ){
+        return ResponseEntity.ok(postService.updatePost(userPrincipal, boardId, postId, dto));
+    }
+
+    @DeleteMapping("/{boardId}/{postId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PostDeleteResponseDTO> deletePost(
+            @AuthenticationPrincipal CustomUserPrincipal userPrincipal,
+            @Parameter(description = "게시판 ID") @PathVariable Long boardId,
+            @Parameter(description = "게시글 ID") @PathVariable Long postId
+    ){
+        return ResponseEntity.ok(postService.deletePost(userPrincipal, boardId, postId));
+    }
 }

@@ -28,4 +28,15 @@ public abstract class BaseEntity {
     public void changeIsDeleted(boolean isDeleted) {
         this.isDeleted = isDeleted;
     }
+
+    public void softDelete() {
+    this.isDeleted = true;
+    this.deletedAt = LocalDateTime.now();
+    }
+
+    // 삭제한 게시글 복구 기능 (추가 구현 필요)
+    public void restore() {
+    this.isDeleted = false;
+    this.deletedAt = null;
+    }
 }
