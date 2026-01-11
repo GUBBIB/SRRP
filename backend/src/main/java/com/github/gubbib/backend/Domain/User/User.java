@@ -59,6 +59,7 @@ public class User extends BaseEntity {
         u.name = name;
         u.nickname = nickname;
         u.provider = Provider.LOCAL;
+        u.point = 0L;
 
         return u;
     }
@@ -71,6 +72,7 @@ public class User extends BaseEntity {
         u.name = name;
         u.nickname = nickname;
         u.provider = provider;
+        u.point = 0L;
 
         return u;
     }
@@ -79,4 +81,11 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    public void addPoint(Long point){
+        this.point += point;
+    }
+
+    public void usePoint(Long point){
+        this.point -= point;
+    }
 }
