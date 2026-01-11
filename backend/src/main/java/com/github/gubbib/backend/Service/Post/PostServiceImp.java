@@ -64,6 +64,10 @@ public class PostServiceImp implements PostService {
         User user = userService.checkUser(userPrincipal);
         Board board = boardPostService.existsBoard(dto.boardId());
 
+        if(dto.content() == null || dto.content().trim().isEmpty()){
+            throw new GlobalException(ErrorCode.POST_BAD_REQUEST);
+        }
+
         Post p = Post.create(
                 dto.title(),
                 dto.content(),

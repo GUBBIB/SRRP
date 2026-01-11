@@ -75,6 +75,11 @@ public class CommentServiceImp implements CommentService {
         User user = userService.checkUser(userPrincipal);
         Post p = boardPostService.existPost(dto.boardId(), dto.postId());
         Comment parent;
+
+        if(dto.comment() == null || dto.comment().trim().isEmpty()) {
+            throw new GlobalException(ErrorCode.COMMENT_BAD_REQUEST);
+        }
+
         if(dto.parentId() != null){
             parent = existParentComment(dto.parentId());
         } else {
