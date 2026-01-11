@@ -47,7 +47,10 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "CM001", "존재하지 않는 댓글입니다"),
 
     // Notification 관련
-    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "존재하지 않는 알림입니다.")
+    NOTIFICATION_NOT_FOUND(HttpStatus.NOT_FOUND, "N001", "존재하지 않는 알림입니다."),
+
+    // Attendance 관련
+    ATTENDANCE_ALREADY_EXISTS(HttpStatus.CONFLICT, "ATN001", "이미 출석체크를 했습니다."),
     ;
 
     private final HttpStatus httpStatus;
