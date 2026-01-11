@@ -1,5 +1,6 @@
 package com.github.gubbib.backend.Domain.User;
 
+import com.github.gubbib.backend.Domain.Attendance.Attendance;
 import com.github.gubbib.backend.Domain.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,6 +10,8 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +37,8 @@ public class User extends BaseEntity {
     @Column(name = "profile_image_url", length = 255)
     private String profile_image_url;
 
+    @Column(name = "point", nullable = false)
+    private Long point = 0L;
 
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name="role", nullable = false,  length = 255, columnDefinition = "user_role")
@@ -42,6 +47,9 @@ public class User extends BaseEntity {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     @Column(name = "provider", nullable = false, length = 255, columnDefinition = "provider_type")
     private Provider provider = Provider.LOCAL;
+
+    @OneToMany(mappedBy = "user")
+    private List<Attendance> attendances = new ArrayList<>();
 
     public static User createLocal(String email, String password, String name, String nickname){
         User u = new User();
