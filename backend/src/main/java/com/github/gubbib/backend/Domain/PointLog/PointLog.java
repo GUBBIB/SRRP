@@ -19,7 +19,7 @@ public class PointLog extends BaseEntity {
 
     @Column(name = "amount", nullable = false)
     private Long amount;
-    @Column(name = "type", nullable = false)
+    @Column(name = "type", nullable = false,  length = 50)
     private String type;
     @Column(name = "description",  nullable = false)
     private String description;
